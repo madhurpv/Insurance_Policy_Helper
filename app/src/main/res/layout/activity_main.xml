@@ -7,7 +7,7 @@
     android:id="@+id/main"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/white">
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/appTitle"
@@ -17,6 +17,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
+        android:textColor="#222222"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +45,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:padding="15dp">
 
                 <ImageView
@@ -64,6 +66,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:paddingTop="8dp"
+                    android:textColor="#222222"
                     app:layout_constraintTop_toBottomOf="@id/cardImage1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -84,6 +87,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:padding="15dp">
 
                 <ImageView
@@ -104,6 +108,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:paddingTop="8dp"
+                    android:textColor="#222222"
                     app:layout_constraintTop_toBottomOf="@id/cardImage2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -124,6 +129,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:padding="15dp">
 
                 <ImageView
@@ -144,6 +150,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:paddingTop="8dp"
+                    android:textColor="#222222"
                     app:layout_constraintTop_toBottomOf="@id/cardImage3"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -164,6 +171,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:padding="15dp">
 
                 <ImageView
@@ -184,6 +192,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:paddingTop="8dp"
+                    android:textColor="#222222"
                     app:layout_constraintTop_toBottomOf="@id/cardImage4"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -204,6 +213,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:padding="15dp">
 
                 <ImageView
@@ -224,6 +234,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:paddingTop="8dp"
+                    android:textColor="#222222"
                     app:layout_constraintTop_toBottomOf="@id/cardImage5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -353,7 +364,7 @@
         <!-- View for adjusting cardview shadow of bottommost cards -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card7" />
