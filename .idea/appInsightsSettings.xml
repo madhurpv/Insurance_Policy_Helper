@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.licpolicyhelper" />
+                  <option name="mobileSdkAppId" value="1:437517992099:android:7558acef7af36248b3ff16" />
+                  <option name="projectId" value="lic-policy-c0d0b" />
+                  <option name="projectNumber" value="437517992099" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
