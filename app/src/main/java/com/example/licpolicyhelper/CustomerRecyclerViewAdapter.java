@@ -13,15 +13,13 @@ import java.util.List;
 
 public class CustomerRecyclerViewAdapter extends RecyclerView.Adapter<CustomerRecyclerViewAdapter.CustomerRecyclerViewHolder> {
 
-
     private List<CustomerClass> examList;
+    private OnClickListener onClickListener;  // Use custom interface, not View.OnClickListener
 
     // Constructor
     public CustomerRecyclerViewAdapter(List<CustomerClass> examList) {
         this.examList = examList;
     }
-
-
 
     @NonNull
     @Override
@@ -34,10 +32,16 @@ public class CustomerRecyclerViewAdapter extends RecyclerView.Adapter<CustomerRe
     @Override
     public void onBindViewHolder(@NonNull CustomerRecyclerViewHolder holder, int position) {
         CustomerClass examItem = examList.get(position);
-
         holder.examName.setText(examItem.getName());
-        //holder.examDate.setText(examItem.getDate());
-        //holder.examMessage.setText(examItem.getMessage());
+        holder.customerPolicyNo.setText(examItem.getPolicyNo());
+        holder.customerDueDate.setText(examItem.getNextDueDate());
+
+        // Set OnClickListener properly
+        holder.itemView.setOnClickListener(view -> {
+            if (onClickListener != null) {
+                onClickListener.onClick(position, examItem);
+            }
+        });
     }
 
     @Override
@@ -45,23 +49,24 @@ public class CustomerRecyclerViewAdapter extends RecyclerView.Adapter<CustomerRe
         return examList.size();
     }
 
-
-
-
-    static class CustomerRecyclerViewHolder extends RecyclerView.ViewHolder {
-        TextView examName, examDate, examMessage;
-        ImageView examPic, examPic2;
-
-        public CustomerRecyclerViewHolder(@NonNull View itemView) {
-
-            super(itemView);
-
-            examName = itemView.findViewById(R.id.customerName);
-            //examDate = itemView.findViewById(R.id.examDate);
-            //examMessage = itemView.findViewById(R.id.examMessage);
-            //examPic = itemView.findViewById(R.id.examPic);
-            //examPic2 = itemView.findViewById(R.id.examPic2);
-        }
+    // Corrected method to set click listener
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
+    // Corrected interface definition
+    public interface OnClickListener {
+        void onClick(int position, CustomerClass customer);
+    }
+
+    static class CustomerRecyclerViewHolder extends RecyclerView.ViewHolder {
+        TextView examName, customerPolicyNo, customerDueDate;
+
+        public CustomerRecyclerViewHolder(@NonNull View itemView) {
+            super(itemView);
+            examName = itemView.findViewById(R.id.customerName);
+            customerPolicyNo = itemView.findViewById(R.id.customerPolicyNo);
+            customerDueDate = itemView.findViewById(R.id.customerDueDate);
+        }
+    }
 }
