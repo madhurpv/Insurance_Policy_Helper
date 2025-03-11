@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minWidth="400dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#00000000"
@@ -132,15 +133,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/dialogModeOfPayment" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/editButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Btn1"
+                android:text="Edit Details"
                 android:textColor="#FFCEB4"
                 android:backgroundTint="#FF3D0D"
                 app:layout_constraintTop_toBottomOf="@+id/dialogNextDueDate" />
 
+            <!--DELETE BUTTON-->
             <Button
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
@@ -149,7 +151,7 @@
                 android:text="Btn2"
                 android:textColor="#FFCEB4"
                 android:backgroundTint="#FF3D0D"
-                app:layout_constraintTop_toBottomOf="@+id/button1" />
+                app:layout_constraintTop_toBottomOf="@+id/editButton" />
 
             <Button
                 android:id="@+id/closeButton"
