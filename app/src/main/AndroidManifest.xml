@@ -6,10 +6,9 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-
 
     <application
         android:allowBackup="true"
@@ -21,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LICPolicyHelper"
         tools:targetApi="31">
+        <activity
+            android:name=".BirthdayListActivity"
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -53,7 +55,6 @@
         </activity>
 
         <service android:name=".PhoneCallReceiver" />
-
     </application>
 
 </manifest>
