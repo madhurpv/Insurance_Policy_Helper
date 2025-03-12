@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerRecyclerViewAdapter extends RecyclerView.Adapter<CustomerRecyclerViewAdapter.CustomerRecyclerViewHolder> {
@@ -42,6 +43,15 @@ public class CustomerRecyclerViewAdapter extends RecyclerView.Adapter<CustomerRe
                 onClickListener.onClick(position, examItem);
             }
         });
+    }
+
+    public void filterList(ArrayList<CustomerClass> filterlist) {
+        // below line is to add our filtered
+        // list in our course array list.
+        examList = filterlist;
+        // below line is to notify our adapter
+        // as change in recycler view data.
+        notifyDataSetChanged();
     }
 
     @Override

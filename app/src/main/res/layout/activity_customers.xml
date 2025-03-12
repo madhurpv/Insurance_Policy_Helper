@@ -23,15 +23,98 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingBottom="16dp"/>
 
+    <LinearLayout
+        android:id="@+id/searchbarLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:background="#EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appTitle">
+
+        <EditText
+            android:id="@+id/searchbar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingVertical="15dp"
+            android:paddingStart="10dp"
+            android:background="#EEEEEE"
+            android:hint="Search..."
+            android:textColorHint="#BBBBBB"
+            android:textColor="#555555"
+            android:drawablePadding="10dp"/>
+
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:src="@android:drawable/ic_menu_search"
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="Search Icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sortLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchbarLinearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#555555"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="Sort By : "/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="250dp"
+            android:layout_height="65dp">
+
+            <Spinner
+                android:id="@+id/sortingSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/spinner_background"
+                android:padding="8dp"
+                android:paddingHorizontal="10dp"
+                android:spinnerMode="dropdown"
+                android:textColor="#000000"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/baseline_arrow_drop_down_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#000000" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/customersRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_margin="15dp"
+        android:background="#DDDDDD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/sortLinearLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addNewCustomerFloatingActionButton"

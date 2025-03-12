@@ -1,10 +1,18 @@
 package com.example.licpolicyhelper;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +31,11 @@ public class CustomersActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     List<CustomerClass> customersList;
+    EditText searchbar;
+    ImageView searchIcon;
+    Spinner sortingSpinner;
+
+    CustomerRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +56,13 @@ public class CustomersActivity extends AppCompatActivity {
         customersList.add(new CustomerClass("12345", "Mr K", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "8/10/2026"));
         customersList.add(new CustomerClass("123456", "Mr deK", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "18/10/2026"));
         customersList.add(new CustomerClass("123457", "Mr Kde", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
+        customersList.add(new CustomerClass("777777", "Popatrao", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
 
         // Set LayoutManager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Set Adapter
-        CustomerRecyclerViewAdapter adapter = new CustomerRecyclerViewAdapter(customersList);
+        adapter = new CustomerRecyclerViewAdapter(customersList);
         adapter.setOnClickListener((position, customer) -> {
             // Handle item click here
             Toast.makeText(getApplicationContext(), "Clicked: " + customer.getName(), Toast.LENGTH_SHORT).show();
@@ -56,8 +70,89 @@ public class CustomersActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
+        searchbar = findViewById(R.id.searchbar);
+        searchbar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                searchFilter(searchbar.getText().toString());
+            }
+        });
+
+
+        searchIcon = findViewById(R.id.searchIcon);
+        searchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchbar.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(searchbar, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+        sortingSpinner = findViewById(R.id.sortingSpinner);
+        String[] sortingSpinnerItems = new String[]{"Name", "Policy No", "Due Date"};
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, sortingSpinnerItems);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, sortingSpinnerItems);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+        sortingSpinner.setAdapter(adapter);
+
+        sortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //Toast.makeText(CustomersActivity.this, "Selected : " + sortingSpinnerItems[i], Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
     }
+
+
+
+    private void searchFilter(String text) {
+        // creating a new array list to filter data
+        ArrayList<CustomerClass> filteredlist = new ArrayList<>();
+
+        /*if(text==null || text.isEmpty()){
+            adapter.filterList(filteredlist);
+        }*/
+
+        // running a for loop to compare elements
+        for (CustomerClass item : customersList) {
+            // checking if the entered string matches any item of our recycler view
+            if (item.getName().toLowerCase().contains(text.toLowerCase()) || item.getPolicyNo().toLowerCase().contains(text.toLowerCase())) {
+                // adding matched item to the filtered list
+                filteredlist.add(item);
+            }
+        }
+
+        if (filteredlist.isEmpty()) {
+            // displaying a toast message if no data found
+            //Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+            adapter.filterList(filteredlist);
+        } else {
+            // passing the filtered list to the adapter class
+            adapter.filterList(filteredlist);
+        }
+
+    }
+
+
 
 
 
@@ -139,7 +234,7 @@ public class CustomersActivity extends AppCompatActivity {
         EditText planTermEditText = dialog.findViewById(R.id.dialogPlanTermEditText);
         EditText modeOfPaymentEditText = dialog.findViewById(R.id.dialogModeOfPaymentEditText);
         EditText nextDueDateEditText = dialog.findViewById(R.id.dialogNextDueDateEditText);
-        Button editDetailsButton = dialog.findViewById(R.id.editButton);
+        //Button editDetailsButton = dialog.findViewById(R.id.editButton);
         Button button2 = dialog.findViewById(R.id.button2);
         Button closeButton = dialog.findViewById(R.id.closeButton);
 
@@ -154,12 +249,12 @@ public class CustomersActivity extends AppCompatActivity {
         nextDueDateEditText.setText(customersList.get(position).getNextDueDate());
 
         // Set up button click listeners
-        editDetailsButton.setOnClickListener(new View.OnClickListener() {
+        /*editDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "ediDetailsButton clicked!", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override

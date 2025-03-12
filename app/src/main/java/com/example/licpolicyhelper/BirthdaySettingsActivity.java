@@ -56,7 +56,7 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
         birthdayMessage2Card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMessage1PopUpDialog();
+                showMessage2PopUpDialog();
             }
         });
     }
