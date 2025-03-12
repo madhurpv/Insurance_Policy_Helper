@@ -34,7 +34,7 @@ public class CustomerRecyclerViewAdapter extends RecyclerView.Adapter<CustomerRe
     public void onBindViewHolder(@NonNull CustomerRecyclerViewHolder holder, int position) {
         CustomerClass examItem = examList.get(position);
         holder.examName.setText(examItem.getName());
-        holder.customerPolicyNo.setText(examItem.getPolicyNo());
+        holder.customerPolicyNo.setText(String.valueOf(examItem.getPolicyNo()));
         holder.customerDueDate.setText(examItem.getNextDueDate());
 
         // Set OnClickListener properly
@@ -48,7 +48,9 @@ public class CustomerRecyclerViewAdapter extends RecyclerView.Adapter<CustomerRe
     public void filterList(ArrayList<CustomerClass> filterlist) {
         // below line is to add our filtered
         // list in our course array list.
-        examList = filterlist;
+        //examList = filterlist;
+        examList.clear();
+        examList.addAll(filterlist);
         // below line is to notify our adapter
         // as change in recycler view data.
         notifyDataSetChanged();

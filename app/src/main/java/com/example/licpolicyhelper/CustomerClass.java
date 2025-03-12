@@ -1,7 +1,12 @@
 package com.example.licpolicyhelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class CustomerClass {
-    private String policyNo;
+    private int policyNo;
     private String name;
     private String dateOfCommencement;
     private String premium;
@@ -9,15 +14,16 @@ public class CustomerClass {
     private String planTerm;
     private String modeOfPayment;
     private String nextDueDate;
+    private Long nextDueDateUnix = -1L;
 
 
 
 
-    public String getPolicyNo() {
+    public int getPolicyNo() {
         return policyNo;
     }
 
-    public void setPolicyNo(String policyNo) {
+    public void setPolicyNo(int policyNo) {
         this.policyNo = policyNo;
     }
 
@@ -75,9 +81,18 @@ public class CustomerClass {
 
     public void setNextDueDate(String nextDueDate) {
         this.nextDueDate = nextDueDate;
+        this.nextDueDateUnix = convertDateToLong(nextDueDate);
     }
 
-    public CustomerClass(String policyNo, String name, String dateOfCommencement, String premium, String dateOfBirth,  String planTerm, String modeOfPayment, String nextDueDate) {
+    public Long getNextDueDateUnix() {
+        return nextDueDateUnix;
+    }
+
+    public void setNextDueDateUnix(Long nextDueDateUnix) {
+        this.nextDueDateUnix = nextDueDateUnix;
+    }
+
+    public CustomerClass(int policyNo, String name, String dateOfCommencement, String premium, String dateOfBirth,  String planTerm, String modeOfPayment, String nextDueDate) {
         this.policyNo = policyNo;
         this.name = name;
         this.dateOfCommencement = dateOfCommencement;
@@ -86,6 +101,20 @@ public class CustomerClass {
         this.modeOfPayment = modeOfPayment;
         this.nextDueDate = nextDueDate;
         this.planTerm = planTerm;
+        this.nextDueDateUnix = convertDateToLong(nextDueDate);
+    }
+
+
+    public Long convertDateToLong(String nextDueDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC")); // Set timezone to UTC for accuracy
+        try {
+            Date date = sdf.parse(nextDueDate);
+            return date.getTime() / 1000 + 10; // Convert milliseconds to seconds
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return -1L; // Return -1 if parsing fails
+        }
     }
 
 

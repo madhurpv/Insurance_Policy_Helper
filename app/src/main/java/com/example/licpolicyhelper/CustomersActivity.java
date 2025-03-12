@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -25,6 +26,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CustomersActivity extends AppCompatActivity {
@@ -36,6 +39,8 @@ public class CustomersActivity extends AppCompatActivity {
     Spinner sortingSpinner;
 
     CustomerRecyclerViewAdapter adapter;
+
+    ArrayList<CustomerClass> filteredlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +58,12 @@ public class CustomersActivity extends AppCompatActivity {
         // Sample data
         customersList = new ArrayList<>();
 
-        customersList.add(new CustomerClass("12345", "Mr K", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "8/10/2026"));
-        customersList.add(new CustomerClass("123456", "Mr deK", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "18/10/2026"));
-        customersList.add(new CustomerClass("123457", "Mr Kde", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
-        customersList.add(new CustomerClass("777777", "Popatrao", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
+        customersList.add(new CustomerClass(12345, "Mr K", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "8/10/2026"));
+        customersList.add(new CustomerClass(123456, "Mr deK", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "18/10/2026"));
+        customersList.add(new CustomerClass(123457, "Mr Kde", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
+        customersList.add(new CustomerClass(777777, "Popatrao", "20/01/2020", "50000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
+        customersList.add(new CustomerClass(777, "Amitabh Bachchan", "27/05/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "20/10/2026"));
+        customersList.add(new CustomerClass(1001001, "Soham", "27/09/2020", "500000.00", "20/10/1700", "936-10", "M/Y", "8/10/2025"));
 
         // Set LayoutManager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -102,15 +109,21 @@ public class CustomersActivity extends AppCompatActivity {
         sortingSpinner = findViewById(R.id.sortingSpinner);
         String[] sortingSpinnerItems = new String[]{"Name", "Policy No", "Due Date"};
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, sortingSpinnerItems);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, sortingSpinnerItems);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, sortingSpinnerItems);
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
-        sortingSpinner.setAdapter(adapter);
+        spinnerAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+        sortingSpinner.setAdapter(spinnerAdapter);
 
         sortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 //Toast.makeText(CustomersActivity.this, "Selected : " + sortingSpinnerItems[i], Toast.LENGTH_SHORT).show();
+                sortCustomers(customersList, sortingSpinnerItems[i]);
+                Log.d("QWER", "customersList : " + customersList);
+                if(filteredlist!=null) {
+                    sortCustomers(filteredlist, sortingSpinnerItems[i]);
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -119,14 +132,34 @@ public class CustomersActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+
+    public static void sortCustomers(List<CustomerClass> customers, String sortBy) {
+        Comparator<CustomerClass> comparator;
+
+        switch (sortBy) {
+            case "Name":
+                comparator = Comparator.comparing(CustomerClass::getName, String.CASE_INSENSITIVE_ORDER);
+                break;
+            case "Policy No":
+                comparator = Comparator.comparingInt(CustomerClass::getPolicyNo);
+                break;
+            case "Due Date":
+                comparator = Comparator.comparingLong(CustomerClass::getNextDueDateUnix);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid sort key: " + sortBy);
+        }
+
+        Collections.sort(customers, comparator);
     }
 
 
 
     private void searchFilter(String text) {
         // creating a new array list to filter data
-        ArrayList<CustomerClass> filteredlist = new ArrayList<>();
+        filteredlist = new ArrayList<>();
 
         /*if(text==null || text.isEmpty()){
             adapter.filterList(filteredlist);
@@ -135,7 +168,7 @@ public class CustomersActivity extends AppCompatActivity {
         // running a for loop to compare elements
         for (CustomerClass item : customersList) {
             // checking if the entered string matches any item of our recycler view
-            if (item.getName().toLowerCase().contains(text.toLowerCase()) || item.getPolicyNo().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getName().toLowerCase().contains(text.toLowerCase()) || String.valueOf(item.getPolicyNo()).toLowerCase().contains(text.toLowerCase())) {
                 // adding matched item to the filtered list
                 filteredlist.add(item);
             }
@@ -147,6 +180,7 @@ public class CustomersActivity extends AppCompatActivity {
             adapter.filterList(filteredlist);
         } else {
             // passing the filtered list to the adapter class
+            sortCustomers(filteredlist, sortingSpinner.getSelectedItem().toString());
             adapter.filterList(filteredlist);
         }
 
@@ -180,7 +214,7 @@ public class CustomersActivity extends AppCompatActivity {
 
 
         nameTextView.setText(customersList.get(position).getName());
-        policyNoTextView.setText(customersList.get(position).getPolicyNo());
+        policyNoTextView.setText(String.valueOf(customersList.get(position).getPolicyNo()));
         dateOfCommencementTextView.setText(customersList.get(position).getDateOfCommencement());
         premiumTextView.setText(customersList.get(position).getPremium());
         dateOfBirthTextView.setText(customersList.get(position).getDateOfBirth());
@@ -240,7 +274,7 @@ public class CustomersActivity extends AppCompatActivity {
 
 
         nameEditText.setText(customersList.get(position).getName());
-        policyNoEditText.setText(customersList.get(position).getPolicyNo());
+        policyNoEditText.setText(String.valueOf(customersList.get(position).getPolicyNo()));
         dateOfCommencementEditText.setText(customersList.get(position).getDateOfCommencement());
         premiumEditText.setText(customersList.get(position).getPremium());
         dateOfBirthEditText.setText(customersList.get(position).getDateOfBirth());
