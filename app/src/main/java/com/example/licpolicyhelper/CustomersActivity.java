@@ -79,7 +79,7 @@ public class CustomersActivity extends AppCompatActivity {
         TextView planTermTextView = dialog.findViewById(R.id.dialogPlanTerm);
         TextView modeOfPaymentTextView = dialog.findViewById(R.id.dialogModeOfPayment);
         TextView nextDueDateTextView = dialog.findViewById(R.id.dialogNextDueDate);
-        Button ediDetailsButton = dialog.findViewById(R.id.editButton);
+        Button editDetailsButton = dialog.findViewById(R.id.editButton);
         Button button2 = dialog.findViewById(R.id.button2);
         Button closeButton = dialog.findViewById(R.id.closeButton);
 
@@ -94,7 +94,7 @@ public class CustomersActivity extends AppCompatActivity {
         nextDueDateTextView.setText(customersList.get(position).getNextDueDate());
 
         // Set up button click listeners
-        ediDetailsButton.setOnClickListener(new View.OnClickListener() {
+        editDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "ediDetailsButton clicked!", Toast.LENGTH_SHORT).show();
@@ -139,7 +139,7 @@ public class CustomersActivity extends AppCompatActivity {
         EditText planTermEditText = dialog.findViewById(R.id.dialogPlanTermEditText);
         EditText modeOfPaymentEditText = dialog.findViewById(R.id.dialogModeOfPaymentEditText);
         EditText nextDueDateEditText = dialog.findViewById(R.id.dialogNextDueDateEditText);
-        Button ediDetailsButton = dialog.findViewById(R.id.editButton);
+        Button editDetailsButton = dialog.findViewById(R.id.editButton);
         Button button2 = dialog.findViewById(R.id.button2);
         Button closeButton = dialog.findViewById(R.id.closeButton);
 
@@ -154,7 +154,7 @@ public class CustomersActivity extends AppCompatActivity {
         nextDueDateEditText.setText(customersList.get(position).getNextDueDate());
 
         // Set up button click listeners
-        ediDetailsButton.setOnClickListener(new View.OnClickListener() {
+        editDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "ediDetailsButton clicked!", Toast.LENGTH_SHORT).show();

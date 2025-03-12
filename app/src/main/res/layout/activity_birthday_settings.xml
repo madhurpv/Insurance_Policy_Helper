@@ -17,6 +17,7 @@
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="#222222"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +77,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/smsSettingsCard"
+                android:id="@+id/birthdayMessage1Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -105,7 +106,7 @@
                         android:id="@+id/cardText5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="SMS Settings <DUMMY>"
+                        android:text="Birthday Message 1"
                         android:textColor="#222222"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -116,14 +117,14 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/birthdaySettingsCard"
+                android:id="@+id/birthdayMessage2Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/smsSettingsCard">
+                app:layout_constraintTop_toBottomOf="@id/birthdayMessage1Card">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -136,15 +137,16 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background"
+                        android:src="@drawable/baseline_sms_24"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:tint="#222222"/>
 
                     <TextView
                         android:id="@+id/cardText6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Birthday Settings <DUMMY>"
+                        android:text="Birthday Message 2"
                         android:textColor="#222222"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -162,7 +164,7 @@
                 android:layout_height="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/birthdaySettingsCard" />
+                app:layout_constraintTop_toBottomOf="@+id/birthdayMessage2Card" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
