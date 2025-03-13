@@ -122,8 +122,17 @@
                     android:layout_weight="1"
                     android:text="10/05/2020"
                     android:textColor="#666666"
+                    android:hint="Enter date as DD/MM/YYYY"
+                    android:textColorHint="#AAAAAA"
                     android:backgroundTint="#999999"
                     android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/dateOfCommencementCalenderImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Select Date from Calender"
+                    android:src="@drawable/baseline_calendar_month_24" />
 
             </LinearLayout>
 
@@ -182,8 +191,17 @@
                     android:layout_weight="1"
                     android:text="01/01/1990"
                     android:textColor="#666666"
+                    android:hint="Enter date as DD/MM/YYYY"
+                    android:textColorHint="#AAAAAA"
                     android:backgroundTint="#999999"
                     android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/dateOfBirthCalenderImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Select Date from Calender"
+                    android:src="@drawable/baseline_calendar_month_24" />
 
             </LinearLayout>
 
@@ -271,9 +289,18 @@
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:text="10/05/2025"
+                    android:hint="Enter date as DD/MM/YYYY"
+                    android:textColorHint="#AAAAAA"
                     android:textColor="#666666"
                     android:backgroundTint="#999999"
                     android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/nextDueDateCalenderImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Select Date from Calender"
+                    android:src="@drawable/baseline_calendar_month_24" />
 
             </LinearLayout>
 
@@ -299,16 +326,33 @@
                 app:layout_constraintTop_toBottomOf="@+id/cancelButton" />
 
             <Button
-                android:id="@+id/closeButton"
+                android:id="@+id/saveButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Close"
+                android:text="Save"
                 android:textColor="#FFF7E0"
                 android:backgroundTint="#EDB300"
                 app:layout_constraintTop_toBottomOf="@+id/button2" />
 
+            <ProgressBar
+                android:id="@+id/progressBarEditPopup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/disabledPopupView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="#40444444"/>
 
 
     </androidx.cardview.widget.CardView>
