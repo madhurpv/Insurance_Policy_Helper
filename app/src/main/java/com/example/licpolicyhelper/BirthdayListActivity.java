@@ -2,7 +2,11 @@ package com.example.licpolicyhelper;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,18 +16,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class BirthdayListActivity extends AppCompatActivity {
 
     FloatingActionButton addNewBirthdayManuallyFloatingActionButton, addNewBirthdayContactsFloatingActionButton;
+
+    RecyclerView recyclerView;
+
+
+    List<BirthdayDetailsClass> birthdayList;
+    BirthdayRecyclerViewAdapter adapter;
+
 
 
     Dialog newBirthdayDialog;
@@ -40,6 +59,28 @@ public class BirthdayListActivity extends AppCompatActivity {
         });
 
 
+        recyclerView = findViewById(R.id.birthdayListRecyclerView);
+
+        birthdayList = new ArrayList<>();
+        birthdayList.add(new BirthdayDetailsClass("Ramesh K", "9876543210", "10/10/2020"));
+        birthdayList.add(new BirthdayDetailsClass("Kamlesh", "7418529630", "10/08/2010"));
+        birthdayList.add(new BirthdayDetailsClass("Suraj", "9876543210", "25/11/2022"));
+        birthdayList.add(new BirthdayDetailsClass("Amit L", "9876543210", "10/05/1990"));
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new BirthdayRecyclerViewAdapter(birthdayList);
+        adapter.setOnClickListener((position, customer) -> {
+            // Handle item click here
+            Toast.makeText(getApplicationContext(), "Clicked: " + customer.getName(), Toast.LENGTH_SHORT).show();
+            //showCustomerPopUpDialog(position);
+        });
+        recyclerView.setAdapter(adapter);
+
+
+
+
+
         addNewBirthdayManuallyFloatingActionButton = findViewById(R.id.addNewBirthdayManuallyFloatingActionButton);
         addNewBirthdayContactsFloatingActionButton = findViewById(R.id.addNewBirthdayContactsFloatingActionButton);
 
@@ -47,14 +88,64 @@ public class BirthdayListActivity extends AppCompatActivity {
         addNewBirthdayManuallyFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showNewBirthdayPopUpDialog();
+                showNewBirthdayPopUpDialog("", "");
             }
         });
+
+
+
+        ActivityResultLauncher<Intent> contactPickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri contactUri = result.getData().getData();
+                        String[] projection = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
+                        try (Cursor cursor = getContentResolver().query(contactUri, projection, null, null, null)) {
+                            if (cursor != null && cursor.moveToFirst()) {
+                                String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                                String phoneNumber = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                                //Toast.makeText(this, "Name: " + name + "\nPhone: " + phoneNumber, Toast.LENGTH_LONG).show();
+                                showNewBirthdayPopUpDialog(name, phoneNumber);
+                            }
+                        }
+                        catch (Exception e){
+                            Toast.makeText(this, "Some Error occured", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
+
+
+        addNewBirthdayContactsFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                contactPickerLauncher.launch(intent);
+            }
+        });
+
+
     }
 
 
 
-    private void showNewBirthdayPopUpDialog() {
+
+
+
+
+    public static void sortBirthdays(List<BirthdayDetailsClass> birthdays, String sortBy) {
+        Comparator<BirthdayDetailsClass> comparator;
+
+        comparator = Comparator.comparingLong(BirthdayDetailsClass::getLongBirthDate);
+
+        Collections.sort(birthdays, comparator);
+    }
+
+
+
+
+
+    private void showNewBirthdayPopUpDialog(String name, String phoneNumber) {
         // Create a new editCustomerDetailsDialog
         newBirthdayDialog = new Dialog(this);
         newBirthdayDialog.setContentView(R.layout.birthday_new_popupdialog);
@@ -64,7 +155,7 @@ public class BirthdayListActivity extends AppCompatActivity {
 
         // Get references to views in the editCustomerDetailsDialog
         TextView title = newBirthdayDialog.findViewById(R.id.dialogTitle);
-        EditText dameEditText = newBirthdayDialog.findViewById(R.id.dialogNameEditText);
+        EditText nameEditText = newBirthdayDialog.findViewById(R.id.dialogNameEditText);
         EditText phoneNoEditText = newBirthdayDialog.findViewById(R.id.dialogPhoneNoEditText);
         EditText birthDateEditText = newBirthdayDialog.findViewById(R.id.dialogBirthDateEditText);
         ImageView birthDateCalenderImageView = newBirthdayDialog.findViewById(R.id.birthDateCalenderImageView);
@@ -76,6 +167,10 @@ public class BirthdayListActivity extends AppCompatActivity {
 
         ProgressBar progressBarNewPopup = newBirthdayDialog.findViewById(R.id.progressBarNewPopup);
         View disabledPopupView = newBirthdayDialog.findViewById(R.id.disabledPopupView);
+
+
+        nameEditText.setText(name);
+        phoneNoEditText.setText(phoneNumber);
 
 
 
@@ -103,7 +198,7 @@ public class BirthdayListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(), "ediDetailsButton clicked!", Toast.LENGTH_SHORT).show();
                 //editCustomerDetailsDialog.cancel();
-                //showEditCustomerCancelPopUpDialog();
+                showNewBirthdayCancelPopUpDialog();
             }
         });
 
@@ -140,5 +235,39 @@ public class BirthdayListActivity extends AppCompatActivity {
         });
 
         newBirthdayDialog.show();
+    }
+
+
+
+    private void showNewBirthdayCancelPopUpDialog() {
+        // Create a new dialog
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.birthday_newcancel_popupdialog);
+        //dialog.setCancelable(true); // Allows dismissing by tapping outside
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        // Get references to views in the dialog
+        TextView title = dialog.findViewById(R.id.dialogTitle);
+        Button discardButton = dialog.findViewById(R.id.discardButton);
+        Button goBackButton = dialog.findViewById(R.id.goBackButton);
+
+        // Set up button click listeners
+        discardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newBirthdayDialog.cancel();
+                dialog.dismiss();
+            }
+        });
+
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }
