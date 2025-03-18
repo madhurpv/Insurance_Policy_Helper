@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="400dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#00000000"
+    android:backgroundTint="#00000000"
+    android:padding="0dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="25dp"
+        app:cardBackgroundColor="#F8DB82"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/dialogTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="New Customer"
+                android:textColor="#222222"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/dialogLinearLayoutName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogTitle"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dialogName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Name : "
+                    android:textColor="#444444"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/dialogNameEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="#666666"
+                    android:backgroundTint="#999999"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dialogLinearLayoutPolicyNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogLinearLayoutName"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dialogPolicyNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Policy No. : "
+                    android:textColor="#444444"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/dialogPolicyNoEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="#666666"
+                    android:backgroundTint="#999999"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dialogLinearLayoutDateOfCommencement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogLinearLayoutPolicyNo"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dialogDateOfCommencement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Date Of Commencement : "
+                    android:textColor="#444444"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/dialogDateOfCommencementEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="#666666"
+                    android:hint="Enter date as DD/MM/YYYY"
+                    android:textColorHint="#AAAAAA"
+                    android:backgroundTint="#999999"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/dateOfCommencementCalenderImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Select Date from Calender"
+                    android:src="@drawable/baseline_calendar_month_24" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dialogLinearLayoutPremium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogLinearLayoutDateOfCommencement"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dialogPremium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Premium : "
+                    android:textColor="#444444"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/dialogPremiumEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="#666666"
+                    android:backgroundTint="#999999"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dialogLinearLayoutDateOfBirth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogLinearLayoutPremium"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dialogDateOfBirth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Date of Birth : "
+                    android:textColor="#444444"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/dialogDateOfBirthEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="#666666"
+                    android:hint="Enter date as DD/MM/YYYY"
+                    android:textColorHint="#AAAAAA"
+                    android:backgroundTint="#999999"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/dateOfBirthCalenderImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Select Date from Calender"
+                    android:src="@drawable/baseline_calendar_month_24" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dialogLinearLayoutPlanTerm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogLinearLayoutDateOfBirth"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dialogPlanTerm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Plan Term"
+                    android:textColor="#444444"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/dialogPlanTermEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="#666666"
+                    android:backgroundTint="#999999"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dialogLinearLayoutModeOfPayment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogLinearLayoutPlanTerm"
+                android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dialogModeOfPayment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="Mode of Payment"
+                android:textColor="#444444"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/dialogModeOfPaymentEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="#666666"
+                android:backgroundTint="#999999"
+                android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dialogLinearLayoutNextDueDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogLinearLayoutModeOfPayment"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dialogNextDueDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Next Due Date"
+                    android:textColor="#444444"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/dialogNextDueDateEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:hint="Enter date as DD/MM/YYYY"
+                    android:textColorHint="#AAAAAA"
+                    android:textColor="#666666"
+                    android:backgroundTint="#999999"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/nextDueDateCalenderImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Select Date from Calender"
+                    android:src="@drawable/baseline_calendar_month_24" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Cancel"
+                android:textColor="#FFF7E0"
+                android:backgroundTint="#EDB300"
+                app:layout_constraintTop_toBottomOf="@+id/dialogLinearLayoutNextDueDate" />
+
+            <!--DELETE BUTTON-->
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Btn2"
+                android:textColor="#FFF7E0"
+                android:backgroundTint="#EDB300"
+                app:layout_constraintTop_toBottomOf="@+id/cancelButton" />
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Save"
+                android:textColor="#FFF7E0"
+                android:backgroundTint="#EDB300"
+                app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+            <ProgressBar
+                android:id="@+id/progressBarNewPopup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/disabledPopupView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="#40444444"/>
+
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

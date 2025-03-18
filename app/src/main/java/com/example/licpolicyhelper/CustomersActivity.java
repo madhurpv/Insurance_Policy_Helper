@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +27,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -41,12 +42,13 @@ public class CustomersActivity extends AppCompatActivity {
     EditText searchbar;
     ImageView searchIcon;
     Spinner sortingSpinner;
+    FloatingActionButton addNewCustomerFloatingActionButton;
 
     CustomerRecyclerViewAdapter adapter;
 
     ArrayList<CustomerClass> filteredlist;
 
-    Dialog editCustomerDetailsDialog;
+    Dialog editCustomerDetailsDialog, newCustomerDetailsDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +81,7 @@ public class CustomersActivity extends AppCompatActivity {
         adapter.setOnClickListener((position, customer) -> {
             // Handle item click here
             Toast.makeText(getApplicationContext(), "Clicked: " + customer.getName(), Toast.LENGTH_SHORT).show();
-            showCustomerPopUpDialog(position);
+            showCustomerInfoPopUpDialog(position);
         });
         recyclerView.setAdapter(adapter);
 
@@ -135,6 +137,14 @@ public class CustomersActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        addNewCustomerFloatingActionButton = findViewById(R.id.addNewCustomerFloatingActionButton);
+        addNewCustomerFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showNewCustomerPopUpDialog();
             }
         });
 
@@ -196,10 +206,10 @@ public class CustomersActivity extends AppCompatActivity {
 
 
 
-    private void showCustomerPopUpDialog(int position) {
+    private void showCustomerInfoPopUpDialog(int position) {
         // Create a new dialog
         Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.customers_popupdialog);
+        dialog.setContentView(R.layout.customersinfo_popupdialog);
         //dialog.setCancelable(true); // Allows dismissing by tapping outside
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -372,6 +382,7 @@ public class CustomersActivity extends AppCompatActivity {
                 //Save here
                 progressBarEditPopup.setVisibility(View.GONE);
                 disabledPopupView.setVisibility(View.GONE);
+                editCustomerDetailsDialog.dismiss();
 
                 /*progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
@@ -410,6 +421,171 @@ public class CustomersActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editCustomerDetailsDialog.cancel();
+                dialog.dismiss();
+            }
+        });
+
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+
+
+
+
+
+
+    private void showNewCustomerPopUpDialog() {
+        // Create a new newCustomerDetailsDialog
+        newCustomerDetailsDialog = new Dialog(this);
+        newCustomerDetailsDialog.setContentView(R.layout.customers_new_popupdialog);
+        //newCustomerDetailsDialog.setCancelable(true); // Allows dismissing by tapping outside
+        newCustomerDetailsDialog.setCancelable(false);
+        newCustomerDetailsDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        // Get references to views in the newCustomerDetailsDialog
+        TextView title = newCustomerDetailsDialog.findViewById(R.id.dialogTitle);
+        EditText nameEditText = newCustomerDetailsDialog.findViewById(R.id.dialogNameEditText);
+        EditText policyNoEditText = newCustomerDetailsDialog.findViewById(R.id.dialogPolicyNoEditText);
+        EditText dateOfCommencementEditText = newCustomerDetailsDialog.findViewById(R.id.dialogDateOfCommencementEditText);
+        EditText premiumEditText = newCustomerDetailsDialog.findViewById(R.id.dialogPremiumEditText);
+        EditText dateOfBirthEditText = newCustomerDetailsDialog.findViewById(R.id.dialogDateOfBirthEditText);
+        EditText planTermEditText = newCustomerDetailsDialog.findViewById(R.id.dialogPlanTermEditText);
+        EditText modeOfPaymentEditText = newCustomerDetailsDialog.findViewById(R.id.dialogModeOfPaymentEditText);
+        EditText nextDueDateEditText = newCustomerDetailsDialog.findViewById(R.id.dialogNextDueDateEditText);
+        ImageView dateOfCommencementCalenderImageView = newCustomerDetailsDialog.findViewById(R.id.dateOfCommencementCalenderImageView);
+        ImageView dateOfBirthCalenderImageView = newCustomerDetailsDialog.findViewById(R.id.dateOfBirthCalenderImageView);
+        ImageView nextDueDateCalenderImageView = newCustomerDetailsDialog.findViewById(R.id.nextDueDateCalenderImageView);
+
+        //Button editDetailsButton = newCustomerDetailsDialog.findViewById(R.id.editButton);
+        Button cancelButton = newCustomerDetailsDialog.findViewById(R.id.cancelButton);
+        Button button2 = newCustomerDetailsDialog.findViewById(R.id.button2);
+        Button saveButton = newCustomerDetailsDialog.findViewById(R.id.saveButton);
+
+        ProgressBar progressBarNewPopup = newCustomerDetailsDialog.findViewById(R.id.progressBarNewPopup);
+        View disabledPopupView = newCustomerDetailsDialog.findViewById(R.id.disabledPopupView);
+
+
+        dateOfCommencementCalenderImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CustomersActivity.this, (v, selectedYear, selectedMonth, selectedDay) -> {
+                    String date = String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear);
+                    dateOfCommencementEditText.setText(date);
+                }, year, month, day);
+
+                datePickerDialog.show();
+            }
+        });
+
+        dateOfBirthCalenderImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CustomersActivity.this, (v, selectedYear, selectedMonth, selectedDay) -> {
+                    String date = String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear);
+                    dateOfBirthEditText.setText(date);
+                }, year, month, day);
+
+                datePickerDialog.show();
+            }
+        });
+
+        nextDueDateCalenderImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CustomersActivity.this, (v, selectedYear, selectedMonth, selectedDay) -> {
+                    String date = String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear);
+                    nextDueDateEditText.setText(date);
+                }, year, month, day);
+
+                datePickerDialog.show();
+            }
+        });
+
+        // Set up button click listeners
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(), "ediDetailsButton clicked!", Toast.LENGTH_SHORT).show();
+                //newCustomerDetailsDialog.cancel();
+                showNewCustomerCancelPopUpDialog();
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Button 2 clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBarNewPopup.setVisibility(View.VISIBLE);
+                disabledPopupView.setVisibility(View.VISIBLE);
+                //Save here
+                progressBarNewPopup.setVisibility(View.GONE);
+                disabledPopupView.setVisibility(View.GONE);
+                newCustomerDetailsDialog.dismiss();
+
+                /*progressBarEditPopup.setVisibility(View.VISIBLE);
+                disabledPopupView.setVisibility(View.VISIBLE);
+                Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        progressBarEditPopup.setVisibility(View.GONE);
+                        disabledPopupView.setVisibility(View.GONE);
+                        newCustomerDetailsDialog.dismiss(); // Close the newCustomerDetailsDialog
+                    }
+                }, 5000);*/
+
+            }
+        });
+
+        newCustomerDetailsDialog.show();
+    }
+
+
+    private void showNewCustomerCancelPopUpDialog() {
+        // Create a new dialog
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.customers_newcancel_popupdialog);
+        //dialog.setCancelable(true); // Allows dismissing by tapping outside
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        // Get references to views in the dialog
+        TextView title = dialog.findViewById(R.id.dialogTitle);
+        Button discardButton = dialog.findViewById(R.id.discardButton);
+        Button goBackButton = dialog.findViewById(R.id.goBackButton);
+
+        // Set up button click listeners
+        discardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newCustomerDetailsDialog.cancel();
                 dialog.dismiss();
             }
         });
