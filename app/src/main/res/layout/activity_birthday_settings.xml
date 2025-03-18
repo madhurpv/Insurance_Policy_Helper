@@ -36,13 +36,13 @@
             android:padding="5dp">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/birthdayListCard"
+                android:id="@+id/todaysBirthdayListCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
-                android:tooltipText="List of People with their birthdays"
+                android:tooltipText="List of People whose birthday is today"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -57,13 +57,54 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/baseline_view_list_24"
+                        android:src="@drawable/baseline_cake_24"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:tint="#222222" />
 
                     <TextView
                         android:id="@+id/cardText3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Today's Birthdays!"
+                        android:textColor="#222222"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/birthdayListCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                android:tooltipText="List of People with their birthdays"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/todaysBirthdayListCard">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:id="@+id/cardImage5"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/baseline_view_list_24"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:tint="#222222" />
+
+                    <TextView
+                        android:id="@+id/cardText5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Birthdays List"
@@ -93,7 +134,7 @@
                     android:padding="15dp">
 
                     <ImageView
-                        android:id="@+id/cardImage5"
+                        android:id="@+id/cardImage6"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:scaleType="centerCrop"
@@ -103,7 +144,7 @@
                         app:tint="#222222" />
 
                     <TextView
-                        android:id="@+id/cardText5"
+                        android:id="@+id/cardText6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Birthday Message 1"
@@ -133,7 +174,7 @@
                     android:padding="15dp">
 
                     <ImageView
-                        android:id="@+id/cardImage6"
+                        android:id="@+id/cardImage7"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:scaleType="centerCrop"
@@ -143,7 +184,7 @@
                         app:tint="#222222"/>
 
                     <TextView
-                        android:id="@+id/cardText6"
+                        android:id="@+id/cardText7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Birthday Message 2"

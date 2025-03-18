@@ -98,6 +98,7 @@ public class BirthdayListActivity extends AppCompatActivity {
 
 
 
+        //For getting Contact
         ActivityResultLauncher<Intent> contactPickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {

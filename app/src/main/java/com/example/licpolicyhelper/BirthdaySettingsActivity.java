@@ -19,7 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class BirthdaySettingsActivity extends AppCompatActivity {
 
 
-    CardView birthdayListCard, birthdayMessage1Card, birthdayMessage2Card;
+    CardView todaysBirthdayListCard, birthdayListCard, birthdayMessage1Card, birthdayMessage2Card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +33,19 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
         });
 
 
+        todaysBirthdayListCard = findViewById(R.id.todaysBirthdayListCard);
         birthdayListCard = findViewById(R.id.birthdayListCard);
         birthdayMessage1Card = findViewById(R.id.birthdayMessage1Card);
         birthdayMessage2Card = findViewById(R.id.birthdayMessage2Card);
 
+
+        todaysBirthdayListCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(BirthdaySettingsActivity.this, BirthdayTodayListActivity.class);
+                BirthdaySettingsActivity.this.startActivity(myIntent);
+            }
+        });
 
         birthdayListCard.setOnClickListener(new View.OnClickListener() {
             @Override

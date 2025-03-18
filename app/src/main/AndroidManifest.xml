@@ -9,6 +9,14 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -20,6 +28,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LICPolicyHelper"
         tools:targetApi="31">
+        <activity
+            android:name=".BirthdayTodayListActivity"
+            android:exported="false" />
+
+        <receiver
+            android:name=".BirthdayAppWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/birthday_app_widget_info" />
+        </receiver>
+
         <activity
             android:name=".BirthdayListActivity"
             android:exported="false" />
