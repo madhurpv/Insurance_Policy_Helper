@@ -1,6 +1,10 @@
 package com.example.licpolicyhelper;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
@@ -15,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class BirthdayTodayRecyclerViewAdapter extends RecyclerView.Adapter<BirthdayTodayRecyclerViewAdapter.BirthdayTodayRecyclerViewHolder> {
@@ -50,7 +56,8 @@ public class BirthdayTodayRecyclerViewAdapter extends RecyclerView.Adapter<Birth
 
                 try {
                     //String url = "https://api.whatsapp.com/send?phone="+ birthdayItem.getPhoneNo() +"&text=" + URLEncoder.encode("Hello", "UTF-8");
-                    String url = "http://api.whatsapp.com/send?phone="+ birthdayItem.getPhoneNo() +"&text=" + URLEncoder.encode("Hello", "UTF-8");
+
+                    String url = "http://api.whatsapp.com/send?phone="+ birthdayItem.getPhoneNo() +"&text=" + URLEncoder.encode(getMessage1(holder.msg1Button.getContext(), birthdayItem.getName()), "UTF-8");
                     i.setPackage("com.whatsapp");
                     i.setData(Uri.parse(url));
                     if (i.resolveActivity(packageManager) != null) {
@@ -70,7 +77,7 @@ public class BirthdayTodayRecyclerViewAdapter extends RecyclerView.Adapter<Birth
                 Intent i = new Intent(Intent.ACTION_VIEW);
 
                 try {
-                    String url = "https://api.whatsapp.com/send?phone="+ birthdayItem.getPhoneNo() +"&text=" + URLEncoder.encode("Hello2", "UTF-8");
+                    String url = "https://api.whatsapp.com/send?phone="+ birthdayItem.getPhoneNo() +"&text=" + URLEncoder.encode(getMessage1(holder.msg2Button.getContext(), birthdayItem.getName()), "UTF-8");
                     i.setPackage("com.whatsapp");
                     i.setData(Uri.parse(url));
                     if (i.resolveActivity(packageManager) != null) {
@@ -127,5 +134,25 @@ public class BirthdayTodayRecyclerViewAdapter extends RecyclerView.Adapter<Birth
             msg1Button = itemView.findViewById(R.id.msg1Button);
             msg2Button = itemView.findViewById(R.id.msg2Button);
         }
+    }
+
+    public String getMessage1(Context context, String name){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String message = sharedPreferences.getString("user_name", "message1");
+
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+        message = message.replace("<name>", name).replace("<date>", currentDate);
+
+        return message;
+    }
+
+    public String getMessage2(Context context, String name){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String message = sharedPreferences.getString("user_name", "message2");
+
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+        message = message.replace("<name>", name).replace("<date>", currentDate);
+
+        return message;
     }
 }

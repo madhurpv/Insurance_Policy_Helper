@@ -84,11 +84,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/editButton" />
 
             <Button
-                android:id="@+id/closeButton"
+                android:id="@+id/saveButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Close"
+                android:text="Save"
                 android:textColor="#FFCEB4"
                 android:backgroundTint="#FF3D0D"
                 app:layout_constraintTop_toBottomOf="@+id/cancelButton" />
