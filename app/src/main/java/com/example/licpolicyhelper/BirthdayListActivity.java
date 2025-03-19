@@ -62,11 +62,6 @@ public class BirthdayListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.birthdayListRecyclerView);
 
         birthdayList = new ArrayList<>();
-        birthdayList.add(new BirthdayDetailsClass("Ramesh K", "9876543210", "10/10/2020"));
-        birthdayList.add(new BirthdayDetailsClass("Kamlesh", "7418529630", "10/08/2010"));
-        birthdayList.add(new BirthdayDetailsClass("Suraj", "9876543210", "25/11/2022"));
-        birthdayList.add(new BirthdayDetailsClass("Amit L", "9876543210", "10/12/1990"));
-        birthdayList.add(new BirthdayDetailsClass("Shamit L", "9876543210", "10/05/2000"));
 
         sortBirthdays(birthdayList, "");
 
@@ -80,6 +75,8 @@ public class BirthdayListActivity extends AppCompatActivity {
             //showCustomerPopUpDialog(position);
         });
         recyclerView.setAdapter(adapter);
+
+        fetchBirthdaysList();
 
 
 
@@ -400,5 +397,19 @@ public class BirthdayListActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+
+    private void fetchBirthdaysList(){
+        List<BirthdayDetailsClass> newList = new ArrayList<>();
+
+        newList.add(new BirthdayDetailsClass("Ramesh K", "9876543210", "10/10/2020"));
+        newList.add(new BirthdayDetailsClass("Kamlesh", "7418529630", "10/08/2010"));
+        newList.add(new BirthdayDetailsClass("Suraj", "9876543210", "25/11/2022"));
+        newList.add(new BirthdayDetailsClass("Amit L", "9876543210", "10/12/1990"));
+        newList.add(new BirthdayDetailsClass("Shamit L", "9876543210", "10/05/2000"));
+
+        birthdayList.addAll(newList);
+        adapter.notifyDataSetChanged();
     }
 }

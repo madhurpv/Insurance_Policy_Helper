@@ -56,14 +56,9 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
 
     public void fillTodaysBirthdayList(){
         //GET_ALL_BIRTHDAYS
-        List<BirthdayDetailsClass> allBirthdaysList = new ArrayList<>();
-        allBirthdaysList.add(new BirthdayDetailsClass("Ramesh K1", "9921350816", "10/08/1975"));
-        allBirthdaysList.add(new BirthdayDetailsClass("Ramesh K2", "9921350816", "18/03/1978"));
-        allBirthdaysList.add(new BirthdayDetailsClass("Ramesh K3", "9921350816", "20/03/1977"));
-        allBirthdaysList.add(new BirthdayDetailsClass("Ramesh K4", "9921350816", "19/03/1973"));
-        allBirthdaysList.add(new BirthdayDetailsClass("Ramesh K5", "9921350816", "18/03/1970"));
-        allBirthdaysList.add(new BirthdayDetailsClass("Ramesh K6", "9921350816", "19/03/2025"));
+        List<BirthdayDetailsClass> allBirthdaysList = new ArrayList<>(getAllBirthdays());
 
+        //Get today's birthdays only
         for(int i=0; i<allBirthdaysList.size(); i++){
             if(isSameDayAsToday(allBirthdaysList.get(i).getBirthDate())){
                 todaysBirthdayList.add(allBirthdaysList.get(i));
@@ -71,6 +66,17 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private List<BirthdayDetailsClass> getAllBirthdays(){
+        List<BirthdayDetailsClass> newList = new ArrayList<>();
+        newList.add(new BirthdayDetailsClass("Ramesh K1", "9921350816", "10/08/1975"));
+        newList.add(new BirthdayDetailsClass("Ramesh K2", "9921350816", "18/03/1978"));
+        newList.add(new BirthdayDetailsClass("Ramesh K3", "9921350816", "20/03/1977"));
+        newList.add(new BirthdayDetailsClass("Ramesh K4", "9921350816", "19/03/1973"));
+        newList.add(new BirthdayDetailsClass("Ramesh K5", "9921350816", "18/03/1970"));
+        newList.add(new BirthdayDetailsClass("Ramesh K6", "9921350816", "19/03/2025"));
+        return newList;
     }
 
 

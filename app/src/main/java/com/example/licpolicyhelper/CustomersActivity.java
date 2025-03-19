@@ -66,13 +66,6 @@ public class CustomersActivity extends AppCompatActivity {
         // Sample data
         customersList = new ArrayList<>();
 
-        customersList.add(new CustomerClass(12345, "Mr K", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "8/10/2026"));
-        customersList.add(new CustomerClass(123456, "Mr deK", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "18/10/2026"));
-        customersList.add(new CustomerClass(123457, "Mr Kde", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
-        customersList.add(new CustomerClass(777777, "Popatrao", "20/01/2020", "50000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
-        customersList.add(new CustomerClass(777, "Amitabh Bachchan", "27/05/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "20/10/2026"));
-        customersList.add(new CustomerClass(1001001, "Soham", "27/09/2020", "500000.00", "20/10/1700", "936-10", "M/Y", "8/10/2025"));
-
         // Set LayoutManager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -84,6 +77,7 @@ public class CustomersActivity extends AppCompatActivity {
             showCustomerInfoPopUpDialog(position);
         });
         recyclerView.setAdapter(adapter);
+        fetchCustomersList();
 
         searchbar = findViewById(R.id.searchbar);
         searchbar.addTextChangedListener(new TextWatcher() {
@@ -599,4 +593,21 @@ public class CustomersActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
+
+    private void fetchCustomersList(){
+        List<CustomerClass> newList = new ArrayList<>();
+
+        newList.add(new CustomerClass(12345, "Mr K", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "8/10/2026"));
+        newList.add(new CustomerClass(123456, "Mr deK", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "18/10/2026"));
+        newList.add(new CustomerClass(123457, "Mr Kde", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
+        newList.add(new CustomerClass(777777, "Popatrao", "20/01/2020", "50000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
+        newList.add(new CustomerClass(777, "Amitabh Bachchan", "27/05/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "20/10/2026"));
+        newList.add(new CustomerClass(1001001, "Soham", "27/09/2020", "500000.00", "20/10/1700", "936-10", "M/Y", "8/10/2025"));
+
+        customersList.addAll(newList);
+        adapter.notifyDataSetChanged();
+
+    }
+
 }
