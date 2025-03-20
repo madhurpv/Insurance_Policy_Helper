@@ -3,6 +3,7 @@ package com.example.licpolicyhelper;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -601,14 +602,22 @@ public class CustomersActivity extends AppCompatActivity {
 
     private void editCustomerFirebase(CustomerClass customer){
         // TODO
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+
     }
 
     private void addNewCustomerFirebase(CustomerClass customer){
         // TODO
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
     }
 
     private void fetchCustomersList(){
         // TODO
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+
         List<CustomerClass> newList = new ArrayList<>();
 
         newList.add(new CustomerClass(12345, "Mr K", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "8/10/2026"));

@@ -55,6 +55,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     private void setNewPassword(String newPWD){
         // TODO
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+
         String newSecureToStorePassword = SecurityClass.encrypt_main_Password(newPWD); // SAVE THIS TO FIREBASE
     }
 }

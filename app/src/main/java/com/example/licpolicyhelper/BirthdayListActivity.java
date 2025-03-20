@@ -3,6 +3,7 @@ package com.example.licpolicyhelper;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -403,6 +404,9 @@ public class BirthdayListActivity extends AppCompatActivity {
 
     private void fetchBirthdaysList(){
         // TODO
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+
         List<BirthdayDetailsClass> newList = new ArrayList<>();
 
         newList.add(new BirthdayDetailsClass("Ramesh K", "9876543210", "10/10/2020"));
@@ -417,5 +421,7 @@ public class BirthdayListActivity extends AppCompatActivity {
 
     private void addNewBirthdayFirebase(BirthdayDetailsClass birthdayDetailsClass){
         // TODO
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
     }
 }
