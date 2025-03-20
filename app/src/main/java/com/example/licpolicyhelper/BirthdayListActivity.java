@@ -217,6 +217,7 @@ public class BirthdayListActivity extends AppCompatActivity {
                 progressBarNewPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
+                addNewBirthdayFirebase(new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), birthDateEditText.getText().toString()));
                 progressBarNewPopup.setVisibility(View.GONE);
                 disabledPopupView.setVisibility(View.GONE);
 
@@ -401,6 +402,7 @@ public class BirthdayListActivity extends AppCompatActivity {
 
 
     private void fetchBirthdaysList(){
+        // TODO
         List<BirthdayDetailsClass> newList = new ArrayList<>();
 
         newList.add(new BirthdayDetailsClass("Ramesh K", "9876543210", "10/10/2020"));
@@ -411,5 +413,9 @@ public class BirthdayListActivity extends AppCompatActivity {
 
         birthdayList.addAll(newList);
         adapter.notifyDataSetChanged();
+    }
+
+    private void addNewBirthdayFirebase(BirthdayDetailsClass birthdayDetailsClass){
+        // TODO
     }
 }

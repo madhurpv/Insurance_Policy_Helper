@@ -374,6 +374,8 @@ public class CustomersActivity extends AppCompatActivity {
                 progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
+                editCustomerFirebase(new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
+
                 progressBarEditPopup.setVisibility(View.GONE);
                 disabledPopupView.setVisibility(View.GONE);
                 editCustomerDetailsDialog.dismiss();
@@ -540,6 +542,8 @@ public class CustomersActivity extends AppCompatActivity {
                 progressBarNewPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
+                addNewCustomerFirebase(new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
+
                 progressBarNewPopup.setVisibility(View.GONE);
                 disabledPopupView.setVisibility(View.GONE);
                 newCustomerDetailsDialog.dismiss();
@@ -595,7 +599,16 @@ public class CustomersActivity extends AppCompatActivity {
     }
 
 
+    private void editCustomerFirebase(CustomerClass customer){
+        // TODO
+    }
+
+    private void addNewCustomerFirebase(CustomerClass customer){
+        // TODO
+    }
+
     private void fetchCustomersList(){
+        // TODO
         List<CustomerClass> newList = new ArrayList<>();
 
         newList.add(new CustomerClass(12345, "Mr K", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "8/10/2026"));
