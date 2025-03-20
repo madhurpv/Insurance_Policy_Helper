@@ -8,7 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class SecurityClass {
 
-    private final String masterPwd = "Hello83EDAI";
+    private static final String masterPwd = "Hello83EDAI";
 
     private static final String ALGORITHM = "AES";
 
@@ -80,5 +80,9 @@ public class SecurityClass {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String encrypt_main_Password(String password){
+        return encryptDecrypt(password, masterPwd, true);
     }
 }

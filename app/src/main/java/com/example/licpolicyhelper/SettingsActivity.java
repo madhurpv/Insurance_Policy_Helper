@@ -44,7 +44,8 @@ public class SettingsActivity extends AppCompatActivity {
         changePasswordCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent myIntent = new Intent(SettingsActivity.this, ChangePasswordActivity.class);
+                SettingsActivity.this.startActivity(myIntent);
             }
         });
 

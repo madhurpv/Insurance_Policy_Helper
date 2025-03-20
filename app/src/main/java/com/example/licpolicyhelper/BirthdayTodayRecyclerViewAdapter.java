@@ -77,7 +77,7 @@ public class BirthdayTodayRecyclerViewAdapter extends RecyclerView.Adapter<Birth
                 Intent i = new Intent(Intent.ACTION_VIEW);
 
                 try {
-                    String url = "https://api.whatsapp.com/send?phone="+ birthdayItem.getPhoneNo() +"&text=" + URLEncoder.encode(getMessage1(holder.msg2Button.getContext(), birthdayItem.getName()), "UTF-8");
+                    String url = "https://api.whatsapp.com/send?phone="+ birthdayItem.getPhoneNo() +"&text=" + URLEncoder.encode(getMessage2(holder.msg2Button.getContext(), birthdayItem.getName()), "UTF-8");
                     i.setPackage("com.whatsapp");
                     i.setData(Uri.parse(url));
                     if (i.resolveActivity(packageManager) != null) {
@@ -138,7 +138,7 @@ public class BirthdayTodayRecyclerViewAdapter extends RecyclerView.Adapter<Birth
 
     public String getMessage1(Context context, String name){
         SharedPreferences sharedPreferences = context.getSharedPreferences("UserPreferences", MODE_PRIVATE);
-        String message = sharedPreferences.getString("user_name", "message1");
+        String message = sharedPreferences.getString("message1", "message1");
 
         String currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
         message = message.replace("<name>", name).replace("<date>", currentDate);
@@ -148,7 +148,7 @@ public class BirthdayTodayRecyclerViewAdapter extends RecyclerView.Adapter<Birth
 
     public String getMessage2(Context context, String name){
         SharedPreferences sharedPreferences = context.getSharedPreferences("UserPreferences", MODE_PRIVATE);
-        String message = sharedPreferences.getString("user_name", "message2");
+        String message = sharedPreferences.getString("message2", "message2");
 
         String currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
         message = message.replace("<name>", name).replace("<date>", currentDate);

@@ -39,13 +39,32 @@ public class LoginActivity extends AppCompatActivity {
         submitButton = findViewById(R.id.submitButton);
         forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        Long loggedIn = sharedPreferences.getLong("login", -1L);
+        if(loggedIn!=-1){
+            Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+            LoginActivity.this.startActivity(myIntent);
+            finish();
+        }
+
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-                LoginActivity.this.startActivity(myIntent);
-                finish();
+                if(checkUsernamePasswordPairIsCorrect(usernameEditText.getText().toString(), passwordEditText.getText().toString())) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putLong("login", System.currentTimeMillis());
+                    editor.putString("username", usernameEditText.getFontFeatureSettings().toString());
+                    editor.apply();
+
+                    Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(myIntent);
+                    finish();
+                }
+                else{
+                    Toast.makeText(LoginActivity.this, "Username/Password incorrect!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -61,6 +80,20 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+    }
+
+
+    private boolean checkUsernamePasswordPairIsCorrect(String username, String password){
+        String getOrigPWDHash = getOldPasswordHash(username);
+        if(SecurityClass.comparePWDs(password, getOrigPWDHash)){
+            return true;
+        }
+        return true; // TODO : False when implemented using Firebase
+    }
+
+    public static String getOldPasswordHash(String username){
+        // TODO
+        return "";
     }
 
 
