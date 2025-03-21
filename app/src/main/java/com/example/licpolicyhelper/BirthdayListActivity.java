@@ -296,7 +296,7 @@ public class BirthdayListActivity extends AppCompatActivity {
 
         //Button editDetailsButton = editCustomerDetailsDialog.findViewById(R.id.editButton);
         Button cancelButton = editBirthdayDialog.findViewById(R.id.cancelButton);
-        Button button2 = editBirthdayDialog.findViewById(R.id.button2);
+        Button deleteButton = editBirthdayDialog.findViewById(R.id.deleteButton);
         Button saveButton = editBirthdayDialog.findViewById(R.id.saveButton);
 
         ProgressBar progressBarEditPopup = editBirthdayDialog.findViewById(R.id.progressBarEditPopup);
@@ -334,10 +334,12 @@ public class BirthdayListActivity extends AppCompatActivity {
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Button 2 clicked!", Toast.LENGTH_SHORT).show();
+                showBirthdayDeletePopUpDialog(position);
+                //Toast.makeText(getApplicationContext(), "Button 2 clicked!", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -347,6 +349,8 @@ public class BirthdayListActivity extends AppCompatActivity {
                 progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
+                editBirthdayFirebase(position, new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), dateOfBirthEditText.getText().toString()));
+
                 progressBarEditPopup.setVisibility(View.GONE);
                 disabledPopupView.setVisibility(View.GONE);
 
@@ -365,6 +369,49 @@ public class BirthdayListActivity extends AppCompatActivity {
         });
 
         editBirthdayDialog.show();
+    }
+
+
+    private void showBirthdayDeletePopUpDialog(int position) {
+        // Create a new dialog
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.birthday_deleteconfirm_popupdialog);
+        //dialog.setCancelable(true); // Allows dismissing by tapping outside
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        // Get references to views in the dialog
+        TextView title = dialog.findViewById(R.id.dialogTitle);
+        Button deleteButton = dialog.findViewById(R.id.deleteButton);
+        Button goBackButton = dialog.findViewById(R.id.goBackButton);
+
+        ProgressBar progressBarEditPopup = editBirthdayDialog.findViewById(R.id.progressBarEditPopup);
+        View disabledPopupView = editBirthdayDialog.findViewById(R.id.disabledPopupView);
+
+        // Set up button click listeners
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBarEditPopup.setVisibility(View.VISIBLE);
+                disabledPopupView.setVisibility(View.VISIBLE);
+                //Delete here
+                deleteBirthday(position);
+
+                progressBarEditPopup.setVisibility(View.GONE);
+                disabledPopupView.setVisibility(View.GONE);
+                editBirthdayDialog.dismiss();
+                dialog.dismiss();
+            }
+        });
+
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
 
@@ -402,6 +449,15 @@ public class BirthdayListActivity extends AppCompatActivity {
     }
 
 
+    private void deleteBirthday(int position){
+        // TODO
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+        //DELETE HERE
+        fetchBirthdaysList();
+    }
+
+
     private void fetchBirthdaysList(){
         // TODO
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
@@ -415,8 +471,18 @@ public class BirthdayListActivity extends AppCompatActivity {
         newList.add(new BirthdayDetailsClass("Amit L", "9876543210", "10/12/1990"));
         newList.add(new BirthdayDetailsClass("Shamit L", "9876543210", "10/05/2000"));
 
+        birthdayList.clear();
         birthdayList.addAll(newList);
         adapter.notifyDataSetChanged();
+    }
+
+    // Save edited details here
+    private void editBirthdayFirebase(int position, BirthdayDetailsClass birthdayDetailsClass){
+        // TODO
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+        //Edit here
+        fetchBirthdaysList();
     }
 
     private void addNewBirthdayFirebase(BirthdayDetailsClass birthdayDetailsClass){

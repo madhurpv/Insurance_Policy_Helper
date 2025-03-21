@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putLong("login", System.currentTimeMillis());
-                    editor.putString("username", usernameEditText.getFontFeatureSettings().toString());
+                    editor.putString("username", usernameEditText.getText().toString());
                     editor.apply();
 
                     Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);

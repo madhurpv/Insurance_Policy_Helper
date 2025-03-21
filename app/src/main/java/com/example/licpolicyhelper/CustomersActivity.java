@@ -49,7 +49,7 @@ public class CustomersActivity extends AppCompatActivity {
 
     ArrayList<CustomerClass> filteredlist;
 
-    Dialog editCustomerDetailsDialog, newCustomerDetailsDialog;
+    Dialog editCustomerDetailsDialog, newCustomerDetailsDialog, customerInfoDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,26 +202,26 @@ public class CustomersActivity extends AppCompatActivity {
 
 
     private void showCustomerInfoPopUpDialog(int position) {
-        // Create a new dialog
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.customersinfo_popupdialog);
-        //dialog.setCancelable(true); // Allows dismissing by tapping outside
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        // Create a new customerInfoDialog
+        customerInfoDialog = new Dialog(this);
+        customerInfoDialog.setContentView(R.layout.customersinfo_popupdialog);
+        //customerInfoDialog.setCancelable(true); // Allows dismissing by tapping outside
+        customerInfoDialog.setCancelable(false);
+        customerInfoDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        // Get references to views in the dialog
-        TextView title = dialog.findViewById(R.id.dialogTitle);
-        TextView nameTextView = dialog.findViewById(R.id.dialogName);
-        TextView policyNoTextView = dialog.findViewById(R.id.dialogPolicyNo);
-        TextView dateOfCommencementTextView = dialog.findViewById(R.id.dialogDateOfCommencement);
-        TextView premiumTextView = dialog.findViewById(R.id.dialogPremium);
-        TextView dateOfBirthTextView = dialog.findViewById(R.id.dialogDateOfBirth);
-        TextView planTermTextView = dialog.findViewById(R.id.dialogPlanTerm);
-        TextView modeOfPaymentTextView = dialog.findViewById(R.id.dialogModeOfPayment);
-        TextView nextDueDateTextView = dialog.findViewById(R.id.dialogNextDueDate);
-        Button editDetailsButton = dialog.findViewById(R.id.editButton);
-        Button button2 = dialog.findViewById(R.id.button2);
-        Button closeButton = dialog.findViewById(R.id.closeButton);
+        // Get references to views in the customerInfoDialog
+        TextView title = customerInfoDialog.findViewById(R.id.dialogTitle);
+        TextView nameTextView = customerInfoDialog.findViewById(R.id.dialogName);
+        TextView policyNoTextView = customerInfoDialog.findViewById(R.id.dialogPolicyNo);
+        TextView dateOfCommencementTextView = customerInfoDialog.findViewById(R.id.dialogDateOfCommencement);
+        TextView premiumTextView = customerInfoDialog.findViewById(R.id.dialogPremium);
+        TextView dateOfBirthTextView = customerInfoDialog.findViewById(R.id.dialogDateOfBirth);
+        TextView planTermTextView = customerInfoDialog.findViewById(R.id.dialogPlanTerm);
+        TextView modeOfPaymentTextView = customerInfoDialog.findViewById(R.id.dialogModeOfPayment);
+        TextView nextDueDateTextView = customerInfoDialog.findViewById(R.id.dialogNextDueDate);
+        Button editDetailsButton = customerInfoDialog.findViewById(R.id.editButton);
+        Button deleteButton = customerInfoDialog.findViewById(R.id.deleteButton);
+        Button closeButton = customerInfoDialog.findViewById(R.id.closeButton);
 
 
         nameTextView.setText(customersList.get(position).getName());
@@ -242,17 +242,60 @@ public class CustomersActivity extends AppCompatActivity {
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Button 2 clicked!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Button 2 clicked!", Toast.LENGTH_SHORT).show();
+                showCustomerDeletePopUpDialog(position);
             }
         });
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss(); // Close the dialog
+                customerInfoDialog.dismiss(); // Close the customerInfoDialog
+            }
+        });
+
+        customerInfoDialog.show();
+    }
+
+    private void showCustomerDeletePopUpDialog(int position){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.customers_deleteconfirm_popupdialog);
+        //dialog.setCancelable(true); // Allows dismissing by tapping outside
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        // Get references to views in the dialog
+        TextView title = dialog.findViewById(R.id.dialogTitle);
+        Button deleteButton = dialog.findViewById(R.id.deleteButton);
+        Button goBackButton = dialog.findViewById(R.id.goBackButton);
+
+        ProgressBar progressBarEditPopup = dialog.findViewById(R.id.progressBarEditPopup);
+        View disabledPopupView = dialog.findViewById(R.id.disabledPopupView);
+
+        // Set up button click listeners
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBarEditPopup.setVisibility(View.VISIBLE);
+                disabledPopupView.setVisibility(View.VISIBLE);
+                //Delete here
+                deleteCustomer(position);
+
+                progressBarEditPopup.setVisibility(View.GONE);
+                disabledPopupView.setVisibility(View.GONE);
+
+                customerInfoDialog.cancel();
+                dialog.dismiss();
+            }
+        });
+
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
 
@@ -375,7 +418,7 @@ public class CustomersActivity extends AppCompatActivity {
                 progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
-                editCustomerFirebase(new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
+                editCustomerFirebase(position, new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
 
                 progressBarEditPopup.setVisibility(View.GONE);
                 disabledPopupView.setVisibility(View.GONE);
@@ -600,11 +643,20 @@ public class CustomersActivity extends AppCompatActivity {
     }
 
 
-    private void editCustomerFirebase(CustomerClass customer){
+    private void deleteCustomer(int position){
         // TODO
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+        //DELETE HERE
+        fetchCustomersList();
+    }
 
+    private void editCustomerFirebase(int position, CustomerClass customer){
+        // TODO
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+        //Edit HERE
+        fetchCustomersList();
     }
 
     private void addNewCustomerFirebase(CustomerClass customer){
@@ -627,6 +679,7 @@ public class CustomersActivity extends AppCompatActivity {
         newList.add(new CustomerClass(777, "Amitabh Bachchan", "27/05/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "20/10/2026"));
         newList.add(new CustomerClass(1001001, "Soham", "27/09/2020", "500000.00", "20/10/1700", "936-10", "M/Y", "8/10/2025"));
 
+        customersList.clear();
         customersList.addAll(newList);
         adapter.notifyDataSetChanged();
 
