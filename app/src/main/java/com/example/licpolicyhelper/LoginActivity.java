@@ -1,9 +1,11 @@
 package com.example.licpolicyhelper;
 
 import android.app.Dialog;
+import android.app.Person;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,10 +13,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -41,21 +50,23 @@ public class LoginActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         Long loggedIn = sharedPreferences.getLong("login", -1L);
-        if(loggedIn!=-1){
+        /*if(loggedIn!=-1){
             Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
             LoginActivity.this.startActivity(myIntent);
             finish();
-        }
+        }*/
 
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkUsernamePasswordPairIsCorrect(usernameEditText.getText().toString(), passwordEditText.getText().toString())) {
+                getDataFirebase();
+                /*if(checkUsernamePasswordPairIsCorrect(usernameEditText.getText().toString(), passwordEditText.getText().toString())) {
                     SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putLong("login", System.currentTimeMillis());
                     editor.putString("username", usernameEditText.getText().toString());
+                    editor.putString("password", passwordEditText.getText().toString());
                     editor.apply();
 
                     Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
@@ -64,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(LoginActivity.this, "Username/Password incorrect!", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
@@ -118,5 +129,31 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+
+
+    private void getDataFirebase(){
+        FirebaseDatabase firebaseDatabase;
+        DatabaseReference databaseReference;
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("QWER", "Getting data!");
+                Log.d("QWER", "snapshot.getChildren() - " + snapshot.getChildren().toString());
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String s = dataSnapshot.getKey();
+                    Toast.makeText(LoginActivity.this, "Retrieved : " + s, Toast.LENGTH_SHORT).show();
+                    Log.d("QWER", "Retrieved : " + s);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(LoginActivity.this, "Failed to retrieve data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

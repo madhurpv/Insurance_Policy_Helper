@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "437517992099",
-    "project_id": "lic-policy-c0d0b",
-    "storage_bucket": "lic-policy-c0d0b.firebasestorage.app"
+    "project_number": "497130466202",
+    "firebase_url": "https://lic-pca-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "lic-pca",
+    "storage_bucket": "lic-pca.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:437517992099:android:7558acef7af36248b3ff16",
+        "mobilesdk_app_id": "1:497130466202:android:655b59ea3ccb10995da823",
         "android_client_info": {
           "package_name": "com.example.licpolicyhelper"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBWZr_hasJCdf03yZa7biIWXMuISNVwZgc"
+          "current_key": "AIzaSyAQYi66YpJqsLSEj_TWHyctyQYWVRi4EsY"
         }
       ],
       "services": {
