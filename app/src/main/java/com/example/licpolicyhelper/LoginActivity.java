@@ -55,12 +55,12 @@ public class LoginActivity extends AppCompatActivity {
         forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
 
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
-        Long loggedIn = sharedPreferences.getLong("login", -1L);
-        /*if(loggedIn!=-1){
+        long loggedIn = sharedPreferences.getLong("login", -1L);
+        if(loggedIn!=-1){
             Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
             LoginActivity.this.startActivity(myIntent);
             finish();
-        }*/
+        }
 
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -139,13 +139,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private boolean checkUsernamePasswordPairIsCorrect(String username, String password){
+    /*private boolean checkUsernamePasswordPairIsCorrect(String username, String password){
 
-        return true; // TODO : False when implemented using Firebase
-    }
+        return true;
+    }*/
 
     /*public static String getOldPasswordHash(String username){
-        // TODO
 
         Log.d("QWER", "HASH = " + oldPasswordHash[0]);
         return oldPasswordHash[0];

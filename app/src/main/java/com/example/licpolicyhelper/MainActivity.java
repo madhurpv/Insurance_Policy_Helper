@@ -104,16 +104,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(MainActivity.this, "Stopping Service", Toast.LENGTH_SHORT).show();
-                //Starting service
-                Intent serviceIntent = new Intent(MainActivity.this, PhoneCallReceiver.class);
+                //Toast.makeText(MainActivity.this, "Stopping Service", Toast.LENGTH_SHORT).show();
+                /*Intent serviceIntent = new Intent(MainActivity.this, PhoneCallReceiver.class);
                 MainActivity.this.stopService(serviceIntent);
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         checkIfSMSServiceIsRunning();
                     }
-                }, 300);
+                }, 300);*/
 
                 Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
                 MainActivity.this.startActivity(myIntent);
@@ -159,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private boolean isSMSServiceRunning() {
+    /*private boolean isSMSServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         if (manager != null) {
             int pid = android.os.Process.myPid(); // Get current process ID
@@ -174,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
-    }
+    }*/
 
     /*public void checkIfServiceIsRunning(Context context) {
         Intent intent = new Intent(context, PhoneCallReceiver.class);
@@ -223,10 +222,36 @@ public class MainActivity extends AppCompatActivity {
         if(isRunning){
             Toast.makeText(this, "Service Detected Running!", Toast.LENGTH_SHORT).show();
             autoSMSCardColourBG.setBackgroundColor(Color.parseColor("#55FF55"));
+            autoSMSCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent serviceIntent = new Intent(MainActivity.this, PhoneCallReceiver.class);
+                    MainActivity.this.stopService(serviceIntent);
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkIfSMSServiceIsRunning();
+                        }
+                    }, 300);
+                }
+            });
         }
         else{
             Toast.makeText(this, "Service Detected Not Running!", Toast.LENGTH_SHORT).show();
             autoSMSCardColourBG.setBackgroundColor(Color.parseColor("#FF5555"));
+            autoSMSCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(MainActivity.this, PhoneCallReceiver.class);
+                    MainActivity.this.startService(i);
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkIfSMSServiceIsRunning();
+                        }
+                    }, 300);
+                }
+            });
         }
     }
 }
