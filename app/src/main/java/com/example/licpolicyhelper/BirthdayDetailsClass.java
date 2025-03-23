@@ -13,6 +13,9 @@ public class BirthdayDetailsClass {
     private String birthDate;
     private Long birthDateLong;
 
+    public BirthdayDetailsClass() {
+    }
+
 
     public String getName() {
         return name;

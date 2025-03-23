@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +56,8 @@ public class BirthdayListActivity extends AppCompatActivity {
 
 
     Dialog newBirthdayDialog, editBirthdayDialog;
+
+    BirthdayDetailsClass deleteBirthdayDetailsClass;
 
     public static FirebaseDatabase firebaseDatabase;
 
@@ -373,6 +376,7 @@ public class BirthdayListActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                deleteBirthdayDetailsClass = new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), dateOfBirthEditText.getText().toString());
                 showBirthdayDeletePopUpDialog(position);
                 //Toast.makeText(getApplicationContext(), "Button 2 clicked!", Toast.LENGTH_SHORT).show();
 
@@ -385,10 +389,32 @@ public class BirthdayListActivity extends AppCompatActivity {
                 progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
-                editBirthdayFirebase(position, new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), dateOfBirthEditText.getText().toString()));
+                //editBirthdayFirebase(position, new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), dateOfBirthEditText.getText().toString()));
+                BirthdayDetailsClass birthdayDetailsClass = new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), dateOfBirthEditText.getText().toString());
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+                String username = sharedPreferences.getString("username", "ERRORRR!!!!");
 
-                progressBarEditPopup.setVisibility(View.GONE);
-                disabledPopupView.setVisibility(View.GONE);
+                DatabaseReference databaseReference;
+                databaseReference = firebaseDatabase.getReference("users").child(username);
+                databaseReference.child("birthdays").child(birthdayDetailsClass.getName()).setValue(birthdayDetailsClass)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(BirthdayListActivity.this, "Birthday Edited Successfully!", Toast.LENGTH_SHORT).show();
+                                progressBarEditPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                                editBirthdayDialog.dismiss();
+                                fetchBirthdaysList();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception error) {
+                                Toast.makeText(BirthdayListActivity.this, "Failed to edit Birthday - check your internet connection or contact the developers for more info!" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                progressBarEditPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                            }
+                        });
 
                 /*progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
@@ -431,7 +457,30 @@ public class BirthdayListActivity extends AppCompatActivity {
                 progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Delete here
-                deleteBirthday(position);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+                String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+
+                DatabaseReference databaseReference;
+                databaseReference = firebaseDatabase.getReference("users").child(username);
+                databaseReference.child("birthdays").child(deleteBirthdayDetailsClass.getName()).removeValue()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(BirthdayListActivity.this, "Birthday Deleted Successfully!", Toast.LENGTH_SHORT).show();
+                                progressBarEditPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                                editBirthdayDialog.dismiss();
+                                fetchBirthdaysList();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception error) {
+                                Toast.makeText(BirthdayListActivity.this, "Failed to delete Birthday - check your internet connection or contact the developers for more info!" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                progressBarEditPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                            }
+                        });
 
                 progressBarEditPopup.setVisibility(View.GONE);
                 disabledPopupView.setVisibility(View.GONE);
@@ -501,21 +550,39 @@ public class BirthdayListActivity extends AppCompatActivity {
 
         List<BirthdayDetailsClass> newList = new ArrayList<>();
 
+        DatabaseReference databaseReference;
+        databaseReference = firebaseDatabase.getReference("users").child(username).child("birthdays");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                 @Override
+                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                         String s = dataSnapshot.getKey();
+                         newList.add(dataSnapshot.getValue(BirthdayDetailsClass.class));
+                         //Toast.makeText(BirthdayListActivity.this, "Retrieved : " + s, Toast.LENGTH_SHORT).show();
+                         Log.d("QWER", "Retrieved : " + s);
+                     }
+                     birthdayList.clear();
+                     birthdayList.addAll(newList);
+                     sortBirthdays(birthdayList, "");
+                     adapter.notifyDataSetChanged();
+                 }
+
+                 @Override
+                 public void onCancelled(@NonNull DatabaseError error) {
+                     Toast.makeText(BirthdayListActivity.this, "Error retrieving Birthdays - check your internet connection or contact the developer", Toast.LENGTH_SHORT).show();
+                 }
+             });
 
 
-
-
-
-
-        newList.add(new BirthdayDetailsClass("Ramesh K", "9876543210", "10/10/2020"));
+        /*newList.add(new BirthdayDetailsClass("Ramesh K", "9876543210", "10/10/2020"));
         newList.add(new BirthdayDetailsClass("Kamlesh", "7418529630", "10/08/2010"));
         newList.add(new BirthdayDetailsClass("Suraj", "9876543210", "25/11/2022"));
         newList.add(new BirthdayDetailsClass("Amit L", "9876543210", "10/12/1990"));
-        newList.add(new BirthdayDetailsClass("Shamit L", "9876543210", "10/05/2000"));
+        newList.add(new BirthdayDetailsClass("Shamit L", "9876543210", "10/05/2000"));*/
 
-        birthdayList.clear();
+        /*birthdayList.clear();
         birthdayList.addAll(newList);
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
     }
 
     // Save edited details here
