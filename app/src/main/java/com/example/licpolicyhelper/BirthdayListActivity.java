@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -26,7 +27,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,6 +56,8 @@ public class BirthdayListActivity extends AppCompatActivity {
 
     Dialog newBirthdayDialog, editBirthdayDialog;
 
+    public static FirebaseDatabase firebaseDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +68,10 @@ public class BirthdayListActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
 
 
         recyclerView = findViewById(R.id.birthdayListRecyclerView);
@@ -218,9 +232,33 @@ public class BirthdayListActivity extends AppCompatActivity {
                 progressBarNewPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
-                addNewBirthdayFirebase(new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), birthDateEditText.getText().toString()));
-                progressBarNewPopup.setVisibility(View.GONE);
-                disabledPopupView.setVisibility(View.GONE);
+                //addNewBirthdayFirebase(new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), birthDateEditText.getText().toString()));
+                BirthdayDetailsClass birthdayDetailsClass = new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), birthDateEditText.getText().toString());
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+                String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+
+                DatabaseReference databaseReference;
+                databaseReference = firebaseDatabase.getReference("users").child(username);
+                databaseReference.child("birthdays").child(birthdayDetailsClass.getName()).setValue(birthdayDetailsClass)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(BirthdayListActivity.this, "Birthday Added Successfully!", Toast.LENGTH_SHORT).show();
+                                progressBarNewPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                                newBirthdayDialog.dismiss();
+                                fetchBirthdaysList();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception error) {
+                                Toast.makeText(BirthdayListActivity.this, "Failed to add new Birthday - check your internet connection or contact the developers for more info!" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                progressBarNewPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                            }
+                        });
+
 
                 /*progressBarNewPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
@@ -232,8 +270,6 @@ public class BirthdayListActivity extends AppCompatActivity {
                         editCustomerDetailsDialog.dismiss(); // Close the editCustomerDetailsDialog
                     }
                 }, 5000);*/
-
-                newBirthdayDialog.dismiss();
 
             }
         });
@@ -465,6 +501,12 @@ public class BirthdayListActivity extends AppCompatActivity {
 
         List<BirthdayDetailsClass> newList = new ArrayList<>();
 
+
+
+
+
+
+
         newList.add(new BirthdayDetailsClass("Ramesh K", "9876543210", "10/10/2020"));
         newList.add(new BirthdayDetailsClass("Kamlesh", "7418529630", "10/08/2010"));
         newList.add(new BirthdayDetailsClass("Suraj", "9876543210", "25/11/2022"));
@@ -485,9 +527,8 @@ public class BirthdayListActivity extends AppCompatActivity {
         fetchBirthdaysList();
     }
 
-    private void addNewBirthdayFirebase(BirthdayDetailsClass birthdayDetailsClass){
-        // TODO
-        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
-    }
+    /*private void addNewBirthdayFirebase(BirthdayDetailsClass birthdayDetailsClass){
+
+
+    }*/
 }
