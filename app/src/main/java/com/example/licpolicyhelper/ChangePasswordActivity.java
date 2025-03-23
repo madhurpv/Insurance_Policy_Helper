@@ -39,7 +39,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                 String username = sharedPreferences.getString("username", "ERRORRR!!!!");
-                String oldPasswordHash = LoginActivity.getOldPasswordHash(username);
+                //String oldPasswordHash = LoginActivity.getOldPasswordHash(username);
                 //if(SecurityClass.comparePWDs(oldPWDEditText.getText().toString(), oldPasswordHash)){
                     setNewPassword(newPWDEditText.getText().toString());
                 Toast.makeText(ChangePasswordActivity.this, "Password changed successfully!", Toast.LENGTH_SHORT).show();

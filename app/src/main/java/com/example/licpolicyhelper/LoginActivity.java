@@ -31,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     Button submitButton;
     TextView forgotPasswordTextView;
 
+    public static FirebaseDatabase firebaseDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,10 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
 
 
         usernameEditText = findViewById(R.id.usernameEditText);
@@ -60,18 +66,57 @@ public class LoginActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Log.d("QWER", "HASH -> " + SecurityClass.getSHA512Hash("123abc"));
+                //Log.d("QWER", "Encrypt -> " + SecurityClass.encrypt_main_Password("123abc"));
+                //getOldPasswordHash(usernameEditText.getText().toString());
                 getDataFirebase();
-                /*if(checkUsernamePasswordPairIsCorrect(usernameEditText.getText().toString(), passwordEditText.getText().toString())) {
-                    SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putLong("login", System.currentTimeMillis());
-                    editor.putString("username", usernameEditText.getText().toString());
-                    editor.putString("password", passwordEditText.getText().toString());
-                    editor.apply();
 
-                    Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    LoginActivity.this.startActivity(myIntent);
-                    finish();
+                final String[] oldPasswordHash = {""};
+                DatabaseReference databaseReference;
+                databaseReference = firebaseDatabase.getReference("users").child(usernameEditText.getText().toString()).child("passwordHash");
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Log.d("QWER", "Getting data!");
+                        Log.d("QWER", "snapshot.getValue() - " + snapshot.getValue());
+                        if(snapshot.getValue() == null){
+                            Log.d("QWER", "Wrong username!");
+                            Toast.makeText(LoginActivity.this, "Username or Password incorrect!", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            oldPasswordHash[0] = snapshot.getValue().toString();
+                            if(SecurityClass.comparePWDs(passwordEditText.getText().toString(), oldPasswordHash[0])){
+                            //if(passwordEditText.getText().toString().equals(oldPasswordHash[0])){
+                                SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putLong("login", System.currentTimeMillis());
+                                editor.putString("username", usernameEditText.getText().toString());
+                                editor.putString("password", passwordEditText.getText().toString());
+                                editor.apply();
+
+                                Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                LoginActivity.this.startActivity(myIntent);
+                                finish();
+                            }
+                            else{
+                                Toast.makeText(LoginActivity.this, "Username or Password incorrect!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        //Toast.makeText(LoginActivity.this, "Failed to retrieve data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Some error occurred - please try again or contact the developers!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
+
+                //setDataFirebase();
+                /*if(checkUsernamePasswordPairIsCorrect(usernameEditText.getText().toString(), passwordEditText.getText().toString())) {
+
                 }
                 else{
                     Toast.makeText(LoginActivity.this, "Username/Password incorrect!", Toast.LENGTH_SHORT).show();
@@ -95,17 +140,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private boolean checkUsernamePasswordPairIsCorrect(String username, String password){
-        String getOrigPWDHash = getOldPasswordHash(username);
-        if(SecurityClass.comparePWDs(password, getOrigPWDHash)){
-            return true;
-        }
+
         return true; // TODO : False when implemented using Firebase
     }
 
-    public static String getOldPasswordHash(String username){
+    /*public static String getOldPasswordHash(String username){
         // TODO
-        return "";
-    }
+
+        Log.d("QWER", "HASH = " + oldPasswordHash[0]);
+        return oldPasswordHash[0];
+    }*/
 
 
 
@@ -134,10 +178,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void getDataFirebase(){
-        FirebaseDatabase firebaseDatabase;
         DatabaseReference databaseReference;
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users");
+        databaseReference = firebaseDatabase.getReference("usersw");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -155,5 +197,19 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Failed to retrieve data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void setDataFirebase(){
+        FirebaseDatabase firebaseDatabase;
+        DatabaseReference databaseReference;
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
+        databaseReference.child("nimalesoham").setValue("person")
+                .addOnSuccessListener(aVoid ->
+                        Toast.makeText(LoginActivity.this, "Data added successfully!", Toast.LENGTH_SHORT).show()
+                )
+                .addOnFailureListener(error ->
+                        Toast.makeText(LoginActivity.this, "Failed to add data: " + error.getMessage(), Toast.LENGTH_SHORT).show()
+                );
     }
 }
