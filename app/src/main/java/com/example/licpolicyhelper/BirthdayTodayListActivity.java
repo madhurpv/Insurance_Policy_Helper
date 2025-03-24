@@ -1,14 +1,24 @@
 package com.example.licpolicyhelper;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +33,8 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
     List<BirthdayDetailsClass> todaysBirthdayList;
     BirthdayTodayRecyclerViewAdapter adapter;
 
+    public static FirebaseDatabase firebaseDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +45,10 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
 
         todaysBirthdayList = new ArrayList<>();
         fillTodaysBirthdayList();
@@ -56,28 +72,59 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
 
     public void fillTodaysBirthdayList(){
         //GET_ALL_BIRTHDAYS
-        List<BirthdayDetailsClass> allBirthdaysList = new ArrayList<>(getAllBirthdays());
+        /*List<BirthdayDetailsClass> allBirthdaysList = new ArrayList<>(getAllBirthdays());
 
         //Get today's birthdays only
         for(int i=0; i<allBirthdaysList.size(); i++){
             if(isSameDayAsToday(allBirthdaysList.get(i).getBirthDate())){
                 todaysBirthdayList.add(allBirthdaysList.get(i));
             }
-        }
+        }*/
+
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+
+        List<BirthdayDetailsClass> allList = new ArrayList<>();
+
+        DatabaseReference databaseReference;
+        databaseReference = firebaseDatabase.getReference("users").child(username).child("birthdays");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String s = dataSnapshot.getKey();
+                    allList.add(dataSnapshot.getValue(BirthdayDetailsClass.class));
+                    //Toast.makeText(BirthdayListActivity.this, "Retrieved : " + s, Toast.LENGTH_SHORT).show();
+                    Log.d("QWER", "Retrieved : " + s);
+                }
+                todaysBirthdayList.clear();
+                for(int i=0; i<allList.size(); i++){
+                    if(isSameDayAsToday(allList.get(i).getBirthDate())){
+                        todaysBirthdayList.add(allList.get(i));
+                    }
+                }
+                //birthdayList.clear();
+                //birthdayList.addAll(newList);
+                //sortBirthdays(birthdayList, "");
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(BirthdayTodayListActivity.this, "Error retrieving Birthdays - check your internet connection or contact the developer", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
 
     }
 
-    private List<BirthdayDetailsClass> getAllBirthdays(){
-        List<BirthdayDetailsClass> newList = new ArrayList<>();
-        newList.add(new BirthdayDetailsClass("Ramesh K1", "9921350816", "10/08/1975"));
-        newList.add(new BirthdayDetailsClass("Ramesh K2", "9921350816", "18/03/1978"));
-        newList.add(new BirthdayDetailsClass("Ramesh K3", "9921350816", "20/03/1977"));
-        newList.add(new BirthdayDetailsClass("Ramesh K4", "9921350816", "19/03/1973"));
-        newList.add(new BirthdayDetailsClass("Ramesh K5", "9921350816", "18/03/1970"));
-        newList.add(new BirthdayDetailsClass("Ramesh K6", "9921350816", "19/03/2025"));
-        return newList;
-    }
+    /*private List<BirthdayDetailsClass> getAllBirthdays() {
+        // TODO
+
+    }*/
 
 
     public boolean isSameDayAsToday(String inputDate) {

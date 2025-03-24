@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     * */
 
     CardView birthdaySettingsCard, smsSettingsCard, customersCard, settingsCard, autoSMSCard;
+    TextView cardText1AutoSMS;
     ConstraintLayout autoSMSCardColourBG;
 
     @Override
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         autoSMSCard = findViewById(R.id.autoSMSCard);
 
         autoSMSCardColourBG = findViewById(R.id.autoSMSCardColourBG);
+        cardText1AutoSMS = findViewById(R.id.cardText1AutoSMS);
 
         //checkIfServiceIsRunning(this);
         //checkIfSMSServiceIsRunning();
@@ -222,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
         if(isRunning){
             Toast.makeText(this, "Service Detected Running!", Toast.LENGTH_SHORT).show();
             autoSMSCardColourBG.setBackgroundColor(Color.parseColor("#55FF55"));
+            cardText1AutoSMS.setText("Auto SMS:Enabled");
             autoSMSCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -239,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
         else{
             Toast.makeText(this, "Service Detected Not Running!", Toast.LENGTH_SHORT).show();
             autoSMSCardColourBG.setBackgroundColor(Color.parseColor("#FF5555"));
+            cardText1AutoSMS.setText("Auto SMS:Disabled");
             autoSMSCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

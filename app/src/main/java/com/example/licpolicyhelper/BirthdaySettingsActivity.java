@@ -89,7 +89,8 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
         Button saveButton = dialog.findViewById(R.id.saveButton);
 
 
-        message1EditText.setText("");
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        message1EditText.setText(sharedPreferences.getString("birthdayMessage1", ""));
 
         // Set up button click listeners
         editDetailsButton.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +113,7 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("message1", message1EditText.getText().toString());
+                editor.putString("birthdayMessage1", message1EditText.getText().toString());
                 editor.apply();
                 dialog.dismiss(); // Close the dialog
             }
@@ -137,7 +138,8 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
         Button saveButton = dialog.findViewById(R.id.saveButton);
 
 
-        message2EditText.setText("");
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        message2EditText.setText(sharedPreferences.getString("birthdayMessage2", ""));
 
         // Set up button click listeners
         editDetailsButton.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +162,7 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("message2", message2EditText.getText().toString());
+                editor.putString("birthdayMessage2", message2EditText.getText().toString());
                 editor.apply();
                 dialog.dismiss(); // Close the dialog
             }

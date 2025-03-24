@@ -60,11 +60,11 @@
                     app:layout_constraintEnd_toEndOf="parent"/>
 
                 <TextView
-                    android:id="@+id/cardText1"
+                    android:id="@+id/cardText1AutoSMS"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Auto SMS:Enabled"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:paddingTop="8dp"
                     android:textColor="#222222"

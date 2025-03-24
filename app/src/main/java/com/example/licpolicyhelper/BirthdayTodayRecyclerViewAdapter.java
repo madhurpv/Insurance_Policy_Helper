@@ -138,7 +138,7 @@ public class BirthdayTodayRecyclerViewAdapter extends RecyclerView.Adapter<Birth
 
     public String getMessage1(Context context, String name){
         SharedPreferences sharedPreferences = context.getSharedPreferences("UserPreferences", MODE_PRIVATE);
-        String message = sharedPreferences.getString("message1", "message1");
+        String message = sharedPreferences.getString("birthdayMessage1", "Message1");
 
         String currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
         message = message.replace("<name>", name).replace("<date>", currentDate);
@@ -148,7 +148,7 @@ public class BirthdayTodayRecyclerViewAdapter extends RecyclerView.Adapter<Birth
 
     public String getMessage2(Context context, String name){
         SharedPreferences sharedPreferences = context.getSharedPreferences("UserPreferences", MODE_PRIVATE);
-        String message = sharedPreferences.getString("message2", "message2");
+        String message = sharedPreferences.getString("birthdayMessage2", "Message2");
 
         String currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
         message = message.replace("<name>", name).replace("<date>", currentDate);
