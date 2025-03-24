@@ -61,6 +61,8 @@ public class BirthdayListActivity extends AppCompatActivity {
 
     public static FirebaseDatabase firebaseDatabase;
 
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,8 @@ public class BirthdayListActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
 
 
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         recyclerView = findViewById(R.id.birthdayListRecyclerView);
 
@@ -482,10 +486,10 @@ public class BirthdayListActivity extends AppCompatActivity {
                             }
                         });
 
-                progressBarEditPopup.setVisibility(View.GONE);
+                /*progressBarEditPopup.setVisibility(View.GONE);
                 disabledPopupView.setVisibility(View.GONE);
                 editBirthdayDialog.dismiss();
-                dialog.dismiss();
+                dialog.dismiss();*/
             }
         });
 
@@ -565,6 +569,7 @@ public class BirthdayListActivity extends AppCompatActivity {
                      birthdayList.addAll(newList);
                      sortBirthdays(birthdayList, "");
                      adapter.notifyDataSetChanged();
+                     progressBar.setVisibility(View.GONE);
                  }
 
                  @Override

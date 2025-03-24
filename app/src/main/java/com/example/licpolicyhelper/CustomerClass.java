@@ -17,8 +17,6 @@ public class CustomerClass {
     private Long nextDueDateUnix = -1L;
 
 
-
-
     public int getPolicyNo() {
         return policyNo;
     }
@@ -90,6 +88,9 @@ public class CustomerClass {
 
     public void setNextDueDateUnix(Long nextDueDateUnix) {
         this.nextDueDateUnix = nextDueDateUnix;
+    }
+
+    public CustomerClass() {
     }
 
     public CustomerClass(int policyNo, String name, String dateOfCommencement, String premium, String dateOfBirth,  String planTerm, String modeOfPayment, String nextDueDate) {

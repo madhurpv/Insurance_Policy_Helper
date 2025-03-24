@@ -3,6 +3,8 @@ package com.example.licpolicyhelper;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -35,6 +37,8 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
 
     public static FirebaseDatabase firebaseDatabase;
 
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +52,11 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
 
 
         firebaseDatabase = FirebaseDatabase.getInstance();
+
+
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
 
         todaysBirthdayList = new ArrayList<>();
@@ -109,6 +118,7 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
                 //birthdayList.addAll(newList);
                 //sortBirthdays(birthdayList, "");
                 adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override

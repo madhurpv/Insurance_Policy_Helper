@@ -103,7 +103,6 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Cancel Button clicked!", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }
         });
@@ -116,6 +115,7 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
                 editor.putString("birthdayMessage1", message1EditText.getText().toString());
                 editor.apply();
                 dialog.dismiss(); // Close the dialog
+                Toast.makeText(getApplicationContext(), "Changes Saved!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -152,7 +152,6 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Cancel Button clicked!", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }
         });
@@ -165,6 +164,7 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
                 editor.putString("birthdayMessage2", message2EditText.getText().toString());
                 editor.apply();
                 dialog.dismiss(); // Close the dialog
+                Toast.makeText(getApplicationContext(), "Changes Saved!", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -28,7 +29,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +58,11 @@ public class CustomersActivity extends AppCompatActivity {
     ArrayList<CustomerClass> filteredlist;
 
     Dialog editCustomerDetailsDialog, newCustomerDetailsDialog, customerInfoDialog;
+    ProgressBar progressBar;
+
+    CustomerClass deleteCustomerClass;
+
+    public static FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +74,13 @@ public class CustomersActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
+
+        progressBar = findViewById(R.id.progressBarCustomers);
+        progressBar.setVisibility(View.VISIBLE);
 
         recyclerView = findViewById(R.id.customersRecyclerView);
 
@@ -79,6 +99,7 @@ public class CustomersActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
         fetchCustomersList();
+
 
         searchbar = findViewById(R.id.searchbar);
         searchbar.addTextChangedListener(new TextWatcher() {
@@ -246,6 +267,7 @@ public class CustomersActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(), "Button 2 clicked!", Toast.LENGTH_SHORT).show();
+                deleteCustomerClass = customersList.get(position);
                 showCustomerDeletePopUpDialog(position);
             }
         });
@@ -282,13 +304,31 @@ public class CustomersActivity extends AppCompatActivity {
                 progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Delete here
-                deleteCustomer(position);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+                String username = sharedPreferences.getString("username", "ERRORRR!!!!");
 
-                progressBarEditPopup.setVisibility(View.GONE);
-                disabledPopupView.setVisibility(View.GONE);
-
-                customerInfoDialog.cancel();
-                dialog.dismiss();
+                DatabaseReference databaseReference;
+                databaseReference = firebaseDatabase.getReference("users").child(username);
+                databaseReference.child("customers").child(String.valueOf(deleteCustomerClass.getPolicyNo())).removeValue()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(CustomersActivity.this, "Customer Deleted Successfully!", Toast.LENGTH_SHORT).show();
+                                progressBarEditPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                                customerInfoDialog.cancel();
+                                dialog.dismiss();
+                                fetchCustomersList();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception error) {
+                                Toast.makeText(CustomersActivity.this, "Failed to delete Birthday - check your internet connection or contact the developers for more info!" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                progressBarEditPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                            }
+                        });
             }
         });
 
@@ -418,11 +458,37 @@ public class CustomersActivity extends AppCompatActivity {
                 progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
-                editCustomerFirebase(position, new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
+                //editCustomerFirebase(position, new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
+                CustomerClass customerClass = new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString());
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+                String username = sharedPreferences.getString("username", "ERRORRR!!!!");
 
-                progressBarEditPopup.setVisibility(View.GONE);
+                DatabaseReference databaseReference;
+                databaseReference = firebaseDatabase.getReference("users").child(username);
+                databaseReference.child("customers").child(String.valueOf(customerClass.getPolicyNo())).setValue(customerClass)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(CustomersActivity.this, "Customer Edited Successfully!", Toast.LENGTH_SHORT).show();
+                                progressBarEditPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                                editCustomerDetailsDialog.dismiss();
+                                customerInfoDialog.dismiss();
+                                fetchCustomersList();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception error) {
+                                Toast.makeText(CustomersActivity.this, "Failed to edit Customer - check your internet connection or contact the developers for more info!" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                progressBarEditPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                            }
+                        });
+
+                /*progressBarEditPopup.setVisibility(View.GONE);
                 disabledPopupView.setVisibility(View.GONE);
-                editCustomerDetailsDialog.dismiss();
+                editCustomerDetailsDialog.dismiss();*/
 
                 /*progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
@@ -586,11 +652,32 @@ public class CustomersActivity extends AppCompatActivity {
                 progressBarNewPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
-                addNewCustomerFirebase(new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
+                //addNewCustomerFirebase(new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
+                CustomerClass customerClass = new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString());
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+                String username = sharedPreferences.getString("username", "ERRORRR!!!!");
 
-                progressBarNewPopup.setVisibility(View.GONE);
-                disabledPopupView.setVisibility(View.GONE);
-                newCustomerDetailsDialog.dismiss();
+                DatabaseReference databaseReference;
+                databaseReference = firebaseDatabase.getReference("users").child(username);
+                databaseReference.child("customers").child(String.valueOf(customerClass.getPolicyNo())).setValue(customerClass)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(CustomersActivity.this, "Birthday Added Successfully!", Toast.LENGTH_SHORT).show();
+                                progressBarNewPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                                newCustomerDetailsDialog.dismiss();
+                                fetchCustomersList();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception error) {
+                                Toast.makeText(CustomersActivity.this, "Failed to add new Customer - check your internet connection or contact the developers for more info!" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                progressBarNewPopup.setVisibility(View.GONE);
+                                disabledPopupView.setVisibility(View.GONE);
+                            }
+                        });
 
                 /*progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
@@ -643,36 +730,59 @@ public class CustomersActivity extends AppCompatActivity {
     }
 
 
-    private void deleteCustomer(int position){
-        // TODO
+    /*private void deleteCustomer(int position){
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
         //DELETE HERE
         fetchCustomersList();
-    }
+    }*/
 
     private void editCustomerFirebase(int position, CustomerClass customer){
-        // TODO
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
         //Edit HERE
         fetchCustomersList();
     }
 
-    private void addNewCustomerFirebase(CustomerClass customer){
-        // TODO
+    /*private void addNewCustomerFirebase(CustomerClass customer){
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
-    }
+    }*/
 
     private void fetchCustomersList(){
-        // TODO
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
 
         List<CustomerClass> newList = new ArrayList<>();
 
-        newList.add(new CustomerClass(12345, "Mr K", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "8/10/2026"));
+        DatabaseReference databaseReference;
+        databaseReference = firebaseDatabase.getReference("users").child(username).child("customers");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String s = dataSnapshot.getKey();
+                    newList.add(dataSnapshot.getValue(CustomerClass.class));
+                    //Toast.makeText(BirthdayListActivity.this, "Retrieved : " + s, Toast.LENGTH_SHORT).show();
+                    Log.d("QWER", "Retrieved : " + s);
+                }
+                customersList.clear();
+                customersList.addAll(newList);
+                sortCustomers(customersList, "Name");
+                adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(CustomersActivity.this, "Error retrieving Customers - check your internet connection or contact the developer", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+        /*newList.add(new CustomerClass(12345, "Mr K", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "8/10/2026"));
         newList.add(new CustomerClass(123456, "Mr deK", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "18/10/2026"));
         newList.add(new CustomerClass(123457, "Mr Kde", "27/01/2020", "5000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
         newList.add(new CustomerClass(777777, "Popatrao", "20/01/2020", "50000.00", "20/10/1700", "936-10", "M/Y", "28/10/2026"));
@@ -681,7 +791,7 @@ public class CustomersActivity extends AppCompatActivity {
 
         customersList.clear();
         customersList.addAll(newList);
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
 
     }
 
