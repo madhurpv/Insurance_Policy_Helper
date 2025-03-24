@@ -146,17 +146,6 @@
                 android:backgroundTint="#EDB300"
                 app:layout_constraintTop_toBottomOf="@+id/dialogLinearLayoutBirthDate" />
 
-            <!--DELETE BUTTON-->
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Btn2"
-                android:textColor="#FFF7E0"
-                android:backgroundTint="#EDB300"
-                app:layout_constraintTop_toBottomOf="@+id/cancelButton" />
-
             <Button
                 android:id="@+id/saveButton"
                 android:layout_width="match_parent"
@@ -165,7 +154,7 @@
                 android:text="Save"
                 android:textColor="#FFF7E0"
                 android:backgroundTint="#EDB300"
-                app:layout_constraintTop_toBottomOf="@+id/button2" />
+                app:layout_constraintTop_toBottomOf="@+id/cancelButton" />
 
             <ProgressBar
                 android:id="@+id/progressBarNewPopup"

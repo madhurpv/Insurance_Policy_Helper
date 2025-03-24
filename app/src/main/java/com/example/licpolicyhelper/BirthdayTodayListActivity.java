@@ -132,7 +132,6 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
     }
 
     /*private List<BirthdayDetailsClass> getAllBirthdays() {
-        // TODO
 
     }*/
 

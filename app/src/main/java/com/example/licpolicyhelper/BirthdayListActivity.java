@@ -186,7 +186,7 @@ public class BirthdayListActivity extends AppCompatActivity {
 
         //Button editDetailsButton = editCustomerDetailsDialog.findViewById(R.id.editButton);
         Button cancelButton = newBirthdayDialog.findViewById(R.id.cancelButton);
-        Button button2 = newBirthdayDialog.findViewById(R.id.button2);
+        //Button button2 = newBirthdayDialog.findViewById(R.id.button2);
         Button saveButton = newBirthdayDialog.findViewById(R.id.saveButton);
 
         ProgressBar progressBarNewPopup = newBirthdayDialog.findViewById(R.id.progressBarNewPopup);
@@ -226,12 +226,12 @@ public class BirthdayListActivity extends AppCompatActivity {
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        /*button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Button 2 clicked!", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -539,7 +539,6 @@ public class BirthdayListActivity extends AppCompatActivity {
 
 
     private void deleteBirthday(int position){
-        // TODO
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
         //DELETE HERE
@@ -548,7 +547,6 @@ public class BirthdayListActivity extends AppCompatActivity {
 
 
     private void fetchBirthdaysList(){
-        // TODO
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
 
@@ -592,7 +590,6 @@ public class BirthdayListActivity extends AppCompatActivity {
 
     // Save edited details here
     private void editBirthdayFirebase(int position, BirthdayDetailsClass birthdayDetailsClass){
-        // TODO
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
         //Edit here

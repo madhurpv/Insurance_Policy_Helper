@@ -368,7 +368,7 @@ public class CustomersActivity extends AppCompatActivity {
 
         //Button editDetailsButton = editCustomerDetailsDialog.findViewById(R.id.editButton);
         Button cancelButton = editCustomerDetailsDialog.findViewById(R.id.cancelButton);
-        Button button2 = editCustomerDetailsDialog.findViewById(R.id.button2);
+        //Button button2 = editCustomerDetailsDialog.findViewById(R.id.button2);
         Button saveButton = editCustomerDetailsDialog.findViewById(R.id.saveButton);
 
         ProgressBar progressBarEditPopup = editCustomerDetailsDialog.findViewById(R.id.progressBarEditPopup);
@@ -445,12 +445,12 @@ public class CustomersActivity extends AppCompatActivity {
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        /*button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Button 2 clicked!", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -571,7 +571,7 @@ public class CustomersActivity extends AppCompatActivity {
 
         //Button editDetailsButton = newCustomerDetailsDialog.findViewById(R.id.editButton);
         Button cancelButton = newCustomerDetailsDialog.findViewById(R.id.cancelButton);
-        Button button2 = newCustomerDetailsDialog.findViewById(R.id.button2);
+        //Button button2 = newCustomerDetailsDialog.findViewById(R.id.button2);
         Button saveButton = newCustomerDetailsDialog.findViewById(R.id.saveButton);
 
         ProgressBar progressBarNewPopup = newCustomerDetailsDialog.findViewById(R.id.progressBarNewPopup);
@@ -639,12 +639,12 @@ public class CustomersActivity extends AppCompatActivity {
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        /*button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Button 2 clicked!", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
