@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -38,6 +39,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -51,7 +60,7 @@ public class CustomersActivity extends AppCompatActivity {
     EditText searchbar;
     ImageView searchIcon;
     Spinner sortingSpinner;
-    FloatingActionButton addNewCustomerFloatingActionButton;
+    FloatingActionButton addNewCustomerFloatingActionButton, saveCustomersFloatingActionButton;
 
     CustomerRecyclerViewAdapter adapter;
 
@@ -161,6 +170,14 @@ public class CustomersActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showNewCustomerPopUpDialog();
+            }
+        });
+
+        saveCustomersFloatingActionButton = findViewById(R.id.saveCustomersFloatingActionButton);
+        saveCustomersFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveAsExcelSheet();
             }
         });
 
@@ -793,6 +810,39 @@ public class CustomersActivity extends AppCompatActivity {
         customersList.addAll(newList);
         adapter.notifyDataSetChanged();*/
 
+    }
+
+    private void saveAsExcelSheet(){
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Sample Sheet");
+
+        // Create a row and cells
+        Row row = sheet.createRow(0);
+        row.createCell(0).setCellValue("Name");
+        row.createCell(1).setCellValue("Age");
+        row = sheet.createRow(1);
+        row.createCell(0).setCellValue("John Doe");
+        row.createCell(1).setCellValue(29);
+
+        // Get the external storage path
+        File directory = new File(Environment.getExternalStorageDirectory(), "ExcelExports");
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) {
+                Toast.makeText(this, "Failed to create directory", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        // Create the Excel file
+        File file = new File(directory, "sample.xlsx");
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            workbook.write(fos);
+            workbook.close();
+            Toast.makeText(this, "Excel file created and exported", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to export Excel file", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

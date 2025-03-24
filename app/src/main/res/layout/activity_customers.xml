@@ -131,6 +131,21 @@
         android:tooltipText="Add New Customer"
         app:srcCompat="@drawable/baseline_add_24" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/saveCustomersFloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:backgroundTint="#FF8D02"
+        android:contentDescription="Add New Customer Button"
+        app:layout_constraintBottom_toTopOf="@+id/addNewCustomerFloatingActionButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="34dp"
+        android:tooltipText="Add New Customer"
+        app:srcCompat="@drawable/baseline_cloud_download_24" />
+
     <ProgressBar
         android:id="@+id/progressBarCustomers"
         android:layout_width="wrap_content"
