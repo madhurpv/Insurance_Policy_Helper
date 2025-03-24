@@ -63,26 +63,39 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/usernameTextView"
+                        android:id="@+id/messageEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/rounded_corner"
+                        android:gravity="top"
+                        android:hint="Custom SMS to send"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
                         android:padding="7dp"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="top"
-                        android:inputType="textMultiLine"
-                        android:hint="Custom SMS to send"
                         android:text="Hello! This is a test SMS\nOur policies are - "
-                        android:minLines="3"
                         android:textColor="#666666"
                         android:textColorHint="#999999"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/customSMSTextView" />
+
+                    <Button
+                        android:id="@+id/saveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save!"
+                        android:textColor="#EEEEEE"
+                        android:backgroundTint="#ADADAD"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/messageEditText" />
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 

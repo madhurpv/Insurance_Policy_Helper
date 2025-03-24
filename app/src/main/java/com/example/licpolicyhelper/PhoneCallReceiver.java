@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Binder;
 import android.os.IBinder;
@@ -39,8 +40,10 @@ public class PhoneCallReceiver extends Service {
                 phoneNumber = getRecentCallNumber(getApplicationContext());
 
                 if (state != null && state.equals("IDLE")) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+                    String phoneSMS = sharedPreferences.getString("phoneSMS", "ERRORRR!!!!");
                     Toast.makeText(getApplicationContext(), "Hello " + (phoneNumber != null ? phoneNumber : "Unknown"), Toast.LENGTH_SHORT).show();
-                    sendSMS(phoneNumber, "Test message\nAs per policy, you receive this msg");
+                    sendSMS(phoneNumber, phoneSMS);
                 }
             }
         }
