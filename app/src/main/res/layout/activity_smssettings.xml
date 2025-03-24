@@ -99,6 +99,54 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/infoBackgroundRun"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/smsMessageCard">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:padding="25dp">
+
+                    <TextView
+                        android:id="@+id/infoBackgroundRunTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tip"
+                        android:textColor="#222222"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tipTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="top"
+                        android:padding="7dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="To make sure app runs and sends SMS properly -\n1. Go to Settings -> Apps\n2. Select 'LIC Policy Helper'\n3. Go to Battery Usage\n4. Switch to 'Unrestricted'\n\nIn some phones, the setting is mentioned as 'Allow Background Usage'\nIn case of any doubt, feel free to contact the developers!"
+                        android:textColor="#666666"
+                        android:textColorHint="#999999"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/infoBackgroundRunTextView" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
             <!-- TODO : Adding constraint for SMS sender -->
 
             <!-- View for adjusting cardview shadow of bottommost cards -->

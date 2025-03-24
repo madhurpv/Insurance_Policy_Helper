@@ -54,8 +54,8 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background"
-                    app:tint="#FF0000"
+                    android:src="@drawable/baseline_auto_awesome_24"
+                    app:tint="#FF954E"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -227,7 +227,7 @@
                     android:layout_height="80dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/baseline_cake_24"
-                    app:tint="#FF0000"
+                    app:tint="#00FFA6"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>

@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.app.Person;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -33,6 +37,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public static FirebaseDatabase firebaseDatabase;
 
+
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +50,8 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        requestPermissions();
 
 
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -69,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                 //Log.d("QWER", "HASH -> " + SecurityClass.getSHA512Hash("123abc"));
                 //Log.d("QWER", "Encrypt -> " + SecurityClass.encrypt_main_Password("123abc"));
                 //getOldPasswordHash(usernameEditText.getText().toString());
-                getDataFirebase();
+                //getDataFirebase();
 
                 final String[] oldPasswordHash = {""};
                 DatabaseReference databaseReference;
@@ -173,6 +182,55 @@ public class LoginActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
+
+
+    private void requestPermissions() {
+        // Check if permissions are granted
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            boolean isReadPhoneStateGranted = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+            boolean isReadCallLogGranted = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED;
+            boolean isSendSmsGranted = ContextCompat.checkSelfPermission(this, android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED;
+
+            if (!isReadPhoneStateGranted || !isReadCallLogGranted || !isSendSmsGranted) {
+                // Request permissions
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                                android.Manifest.permission.READ_PHONE_STATE,
+                                android.Manifest.permission.READ_CALL_LOG,
+                                android.Manifest.permission.SEND_SMS
+                        },
+                        PERMISSION_REQUEST_CODE);
+            } else {
+                // Permissions are already granted
+                //Toast.makeText(this, "Permissions are already granted.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            // Check if permissions are granted
+            if (grantResults.length > 0) {
+                boolean readPhoneStatePermission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                boolean readCallLogPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                boolean sendSmsPermission = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+
+                if (readPhoneStatePermission && readCallLogPermission && sendSmsPermission) {
+                    //Toast.makeText(this, "Permissions granted!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Permissions denied - the app may not work correctly", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+
+
+
 
 
 

@@ -42,7 +42,7 @@ public class PhoneCallReceiver extends Service {
                 if (state != null && state.equals("IDLE")) {
                     SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                     String phoneSMS = sharedPreferences.getString("phoneSMS", "ERRORRR!!!!");
-                    Toast.makeText(getApplicationContext(), "Hello " + (phoneNumber != null ? phoneNumber : "Unknown"), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Hello " + (phoneNumber != null ? phoneNumber : "Unknown"), Toast.LENGTH_SHORT).show();
                     sendSMS(phoneNumber, phoneSMS);
                 }
             }
@@ -74,7 +74,7 @@ public class PhoneCallReceiver extends Service {
         super.onDestroy();
         unregisterReceiver(callReceiver);
         isServiceRunning = false;
-        Toast.makeText(this, "Service is Destroyed", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Service is Destroyed", Toast.LENGTH_SHORT).show();
     }
 
     public boolean isRunning() {

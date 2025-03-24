@@ -94,7 +94,7 @@ public class CustomersActivity extends AppCompatActivity {
         adapter = new CustomerRecyclerViewAdapter(customersList);
         adapter.setOnClickListener((position, customer) -> {
             // Handle item click here
-            Toast.makeText(getApplicationContext(), "Clicked: " + customer.getName(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Clicked: " + customer.getName(), Toast.LENGTH_SHORT).show();
             showCustomerInfoPopUpDialog(position);
         });
         recyclerView.setAdapter(adapter);

@@ -57,6 +57,18 @@ public class MainActivity extends AppCompatActivity {
     *
     * */
 
+
+
+
+    /*
+    *
+    * TODO :
+    *  1. Customers view data (download excel)
+    *  2. Encrypt-Decrypt all data on Firebase using password
+    *
+    *
+    * */
+
     CardView birthdaySettingsCard, smsSettingsCard, customersCard, settingsCard, autoSMSCard;
     TextView cardText1AutoSMS;
     ConstraintLayout autoSMSCardColourBG;
@@ -89,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         autoSMSCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Starting Service", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Starting Service", Toast.LENGTH_SHORT).show();
                 //Starting service
                 Intent serviceIntent = new Intent(MainActivity.this, PhoneCallReceiver.class);
                 MainActivity.this.startService(serviceIntent);

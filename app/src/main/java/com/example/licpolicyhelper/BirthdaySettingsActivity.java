@@ -84,7 +84,7 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
         // Get references to views in the dialog
         TextView title = dialog.findViewById(R.id.dialogTitle);
         EditText message1EditText = dialog.findViewById(R.id.message1EditText);
-        Button editDetailsButton = dialog.findViewById(R.id.editButton);
+        //Button editDetailsButton = dialog.findViewById(R.id.editButton);
         Button cancelButton = dialog.findViewById(R.id.cancelButton);
         Button saveButton = dialog.findViewById(R.id.saveButton);
 
@@ -93,12 +93,12 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
         message1EditText.setText(sharedPreferences.getString("birthdayMessage1", ""));
 
         // Set up button click listeners
-        editDetailsButton.setOnClickListener(new View.OnClickListener() {
+        /*editDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "ediDetailsButton clicked!", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,12 +142,12 @@ public class BirthdaySettingsActivity extends AppCompatActivity {
         message2EditText.setText(sharedPreferences.getString("birthdayMessage2", ""));
 
         // Set up button click listeners
-        editDetailsButton.setOnClickListener(new View.OnClickListener() {
+        /*editDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "ediDetailsButton clicked!", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override

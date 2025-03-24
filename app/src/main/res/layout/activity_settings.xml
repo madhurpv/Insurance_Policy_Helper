@@ -72,7 +72,7 @@
                             android:id="@+id/nameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Name"
+                            android:text="Username"
                             android:textColor="#222222"
                             android:textSize="18sp"
                             android:textStyle="bold"
@@ -156,9 +156,9 @@
                         android:layout_height="50dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/baseline_sms_24"
+                        app:tint="#0055FF"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:tint="#222222" />
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/cardText5"
@@ -195,7 +195,8 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background"
+                        android:src="@drawable/baseline_cake_24"
+                        app:tint="#00FFA6"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
 

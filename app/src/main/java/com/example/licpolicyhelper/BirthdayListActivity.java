@@ -474,6 +474,7 @@ public class BirthdayListActivity extends AppCompatActivity {
                                 progressBarEditPopup.setVisibility(View.GONE);
                                 disabledPopupView.setVisibility(View.GONE);
                                 editBirthdayDialog.dismiss();
+                                dialog.dismiss();
                                 fetchBirthdaysList();
                             }
                         })

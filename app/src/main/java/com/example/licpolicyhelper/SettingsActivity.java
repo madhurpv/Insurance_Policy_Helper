@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class SettingsActivity extends AppCompatActivity {
 
     CardView userInfoCard, changePasswordCard, smsSettingsCard, birthdaySettingsCard, signOutCard;
+    TextView usernameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,13 @@ public class SettingsActivity extends AppCompatActivity {
         birthdaySettingsCard = findViewById(R.id.birthdaySettingsCard);
         signOutCard = findViewById(R.id.signOutCard);
 
+        usernameTextView = findViewById(R.id.usernameTextView);
+
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+        usernameTextView.setText(username);
 
 
         userInfoCard.setOnClickListener(new View.OnClickListener() {
