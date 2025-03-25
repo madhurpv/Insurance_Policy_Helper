@@ -47,10 +47,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class CustomersActivity extends AppCompatActivity {
@@ -813,16 +815,39 @@ public class CustomersActivity extends AppCompatActivity {
     }
 
     private void saveAsExcelSheet(){
+
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Sample Sheet");
 
         // Create a row and cells
         Row row = sheet.createRow(0);
-        row.createCell(0).setCellValue("Name");
-        row.createCell(1).setCellValue("Age");
-        row = sheet.createRow(1);
+        row.createCell(0).setCellValue("Sr. No");
+        row.createCell(1).setCellValue("Name");
+        row.createCell(2).setCellValue("Policy Number");
+        row.createCell(3).setCellValue("Date Of Commencement");
+        row.createCell(4).setCellValue("Premium");
+        row.createCell(5).setCellValue("Date Of Birth");
+        row.createCell(6).setCellValue("Mode of Payment");
+        row.createCell(7).setCellValue("Next Due Date");
+        row.createCell(8).setCellValue("Plan Term");
+        for(int i=0; i<customersList.size(); i++){
+            row = sheet.createRow(i+1);
+            row.createCell(0).setCellValue(i+1);
+            row.createCell(1).setCellValue(customersList.get(i).getName());
+            row.createCell(2).setCellValue(customersList.get(i).getPolicyNo());
+            row.createCell(3).setCellValue(customersList.get(i).getDateOfCommencement());
+            row.createCell(4).setCellValue(customersList.get(i).getPremium());
+            row.createCell(5).setCellValue(customersList.get(i).getDateOfBirth());
+            row.createCell(6).setCellValue(customersList.get(i).getModeOfPayment());
+            row.createCell(7).setCellValue(customersList.get(i).getNextDueDate());
+            row.createCell(8).setCellValue(customersList.get(i).getPlanTerm());
+        }
+        /*row = sheet.createRow(1);
         row.createCell(0).setCellValue("John Doe");
-        row.createCell(1).setCellValue(29);
+        row.createCell(1).setCellValue(29);*/
 
         // Get the external storage path
         File directory = new File(Environment.getExternalStorageDirectory(), "ExcelExports");
@@ -834,7 +859,10 @@ public class CustomersActivity extends AppCompatActivity {
         }
 
         // Create the Excel file
-        File file = new File(directory, "sample.xlsx");
+        SimpleDateFormat sdf = new SimpleDateFormat("HHmmss_ddMMyyyy");
+        Date currentDate = new Date();
+
+        File file = new File(directory, "CustomerExport_" + sdf.format(currentDate) + ".xlsx");
         try (FileOutputStream fos = new FileOutputStream(file)) {
             workbook.write(fos);
             workbook.close();
@@ -843,6 +871,9 @@ public class CustomersActivity extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, "Failed to export Excel file", Toast.LENGTH_SHORT).show();
         }
+
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
 }

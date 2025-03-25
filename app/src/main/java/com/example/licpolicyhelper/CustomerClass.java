@@ -6,14 +6,14 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class CustomerClass {
-    private int policyNo;
-    private String name;
-    private String dateOfCommencement;
-    private String premium;
-    private String dateOfBirth;
-    private String planTerm;
-    private String modeOfPayment;
-    private String nextDueDate;
+    private int policyNo = -1;
+    private String name = "";
+    private String dateOfCommencement = "";
+    private String premium = "";
+    private String dateOfBirth = "";
+    private String planTerm = "";
+    private String modeOfPayment = "";
+    private String nextDueDate = "";
     private Long nextDueDateUnix = -1L;
 
 
