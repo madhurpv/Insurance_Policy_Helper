@@ -58,17 +58,6 @@ public class MainActivity extends AppCompatActivity {
     * */
 
 
-
-
-    /*
-    *
-    * TODO :
-    *  1. Customers view data (download excel)
-    *  2. Encrypt-Decrypt all data on Firebase using password
-    *
-    *
-    * */
-
     CardView birthdaySettingsCard, smsSettingsCard, customersCard, settingsCard, autoSMSCard;
     TextView cardText1AutoSMS;
     ConstraintLayout autoSMSCardColourBG;
