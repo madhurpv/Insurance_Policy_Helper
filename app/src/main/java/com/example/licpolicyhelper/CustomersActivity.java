@@ -3,9 +3,12 @@ package com.example.licpolicyhelper;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -72,6 +77,9 @@ public class CustomersActivity extends AppCompatActivity {
     ProgressBar progressBar;
 
     CustomerClass deleteCustomerClass;
+
+    private Workbook workbook; // Assuming you have a workbook object already
+    private ActivityResultLauncher<Intent> createDocumentLauncher;
 
     public static FirebaseDatabase firebaseDatabase;
 
@@ -182,6 +190,21 @@ public class CustomersActivity extends AppCompatActivity {
                 saveAsExcelSheet();
             }
         });
+
+
+        createDocumentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri uri = result.getData().getData();
+                        if (uri != null) {
+                            writeFileToUri(uri);
+                        } else {
+                            Toast.makeText(this, "Failed to get URI", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(this, "File creation cancelled", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 
@@ -819,7 +842,7 @@ public class CustomersActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
 
-        Workbook workbook = new XSSFWorkbook();
+        workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Sample Sheet");
 
         // Create a row and cells
@@ -850,30 +873,42 @@ public class CustomersActivity extends AppCompatActivity {
         row.createCell(1).setCellValue(29);*/
 
         // Get the external storage path
-        File directory = new File(Environment.getExternalStorageDirectory(), "ExcelExports");
+        /*File directory = new File(Environment.getExternalStorageDirectory(), "ExcelExports");
         if (!directory.exists()) {
             if (!directory.mkdirs()) {
                 Toast.makeText(this, "Failed to create directory", Toast.LENGTH_SHORT).show();
                 return;
             }
-        }
+        }*/
 
         // Create the Excel file
         SimpleDateFormat sdf = new SimpleDateFormat("HHmmss_ddMMyyyy");
         Date currentDate = new Date();
+        String fileName = "CustomerExport_" + sdf.format(currentDate) + ".xlsx";
 
-        File file = new File(directory, "CustomerExport_" + sdf.format(currentDate) + ".xlsx");
-        try (FileOutputStream fos = new FileOutputStream(file)) {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // MIME type for .xlsx
+        intent.putExtra(Intent.EXTRA_TITLE, fileName);
+
+        createDocumentLauncher.launch(intent);
+
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void writeFileToUri(Uri uri) {
+        try (ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "w");
+             FileOutputStream fos = new FileOutputStream(pfd.getFileDescriptor())) {
+
             workbook.write(fos);
             workbook.close();
             Toast.makeText(this, "Excel file created and exported", Toast.LENGTH_SHORT).show();
+
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Failed to export Excel file", Toast.LENGTH_SHORT).show();
         }
-
-        progressBar.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.licpolicyhelper;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.Person;
 import android.content.Intent;
