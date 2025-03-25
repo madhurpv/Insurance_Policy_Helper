@@ -239,10 +239,12 @@ public class BirthdayListActivity extends AppCompatActivity {
                 progressBarNewPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
-                //addNewBirthdayFirebase(new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), birthDateEditText.getText().toString()));
-                BirthdayDetailsClass birthdayDetailsClass = new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), birthDateEditText.getText().toString());
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                 String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+                String password = sharedPreferences.getString("password", "ERRORRR!!!!");
+                //addNewBirthdayFirebase(new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), birthDateEditText.getText().toString()));
+                BirthdayDetailsClass birthdayDetailsClass = new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), birthDateEditText.getText().toString());
+                birthdayDetailsClass.encryptBirthdayClass(password);
 
                 DatabaseReference databaseReference;
                 databaseReference = firebaseDatabase.getReference("users").child(username);
@@ -393,10 +395,12 @@ public class BirthdayListActivity extends AppCompatActivity {
                 progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
-                //editBirthdayFirebase(position, new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), dateOfBirthEditText.getText().toString()));
-                BirthdayDetailsClass birthdayDetailsClass = new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), dateOfBirthEditText.getText().toString());
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                 String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+                String password = sharedPreferences.getString("password", "ERRORRR!!!!");
+                //editBirthdayFirebase(position, new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), dateOfBirthEditText.getText().toString()));
+                BirthdayDetailsClass birthdayDetailsClass = new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), dateOfBirthEditText.getText().toString());
+                birthdayDetailsClass.encryptBirthdayClass(password);
 
                 DatabaseReference databaseReference;
                 databaseReference = firebaseDatabase.getReference("users").child(username);
@@ -550,6 +554,7 @@ public class BirthdayListActivity extends AppCompatActivity {
     private void fetchBirthdaysList(){
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+        String password = sharedPreferences.getString("password", "ERRORRR!!!!");
 
         List<BirthdayDetailsClass> newList = new ArrayList<>();
 
@@ -560,7 +565,9 @@ public class BirthdayListActivity extends AppCompatActivity {
                  public void onDataChange(@NonNull DataSnapshot snapshot) {
                      for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                          String s = dataSnapshot.getKey();
-                         newList.add(dataSnapshot.getValue(BirthdayDetailsClass.class));
+                         BirthdayDetailsClass birthdayDetailsClass = dataSnapshot.getValue(BirthdayDetailsClass.class);
+                         birthdayDetailsClass.decryptBirthdayClass(password);
+                         newList.add(birthdayDetailsClass);
                          //Toast.makeText(BirthdayListActivity.this, "Retrieved : " + s, Toast.LENGTH_SHORT).show();
                          Log.d("QWER", "Retrieved : " + s);
                      }

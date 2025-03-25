@@ -500,10 +500,12 @@ public class CustomersActivity extends AppCompatActivity {
                 progressBarEditPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
-                //editCustomerFirebase(position, new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
-                CustomerClass customerClass = new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString());
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                 String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+                String password = sharedPreferences.getString("password", "ERRORRR!!!!");
+                //editCustomerFirebase(position, new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
+                CustomerClass customerClass = new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString());
+                customerClass.encryptCustomerClass(password);
 
                 DatabaseReference databaseReference;
                 databaseReference = firebaseDatabase.getReference("users").child(username);
@@ -694,10 +696,12 @@ public class CustomersActivity extends AppCompatActivity {
                 progressBarNewPopup.setVisibility(View.VISIBLE);
                 disabledPopupView.setVisibility(View.VISIBLE);
                 //Save here
-                //addNewCustomerFirebase(new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
-                CustomerClass customerClass = new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString());
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                 String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+                String password = sharedPreferences.getString("password", "ERRORRR!!!!");
+                //addNewCustomerFirebase(new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString()));
+                CustomerClass customerClass = new CustomerClass(Integer.parseInt(policyNoEditText.getText().toString()), nameEditText.getText().toString(), dateOfCommencementEditText.getText().toString(), premiumEditText.getText().toString(), dateOfBirthEditText.getText().toString(), planTermEditText.getText().toString(), modeOfPaymentEditText.getText().toString(), nextDueDateEditText.getText().toString());
+                customerClass.encryptCustomerClass(password);
 
                 DatabaseReference databaseReference;
                 databaseReference = firebaseDatabase.getReference("users").child(username);
@@ -794,6 +798,7 @@ public class CustomersActivity extends AppCompatActivity {
     private void fetchCustomersList(){
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+        String password = sharedPreferences.getString("password", "ERRORRR!!!!");
 
         List<CustomerClass> newList = new ArrayList<>();
 
@@ -804,7 +809,9 @@ public class CustomersActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     String s = dataSnapshot.getKey();
-                    newList.add(dataSnapshot.getValue(CustomerClass.class));
+                    CustomerClass customerClass = dataSnapshot.getValue(CustomerClass.class);
+                    customerClass.decryptCustomerClass(password);
+                    newList.add(customerClass);
                     //Toast.makeText(BirthdayListActivity.this, "Retrieved : " + s, Toast.LENGTH_SHORT).show();
                     Log.d("QWER", "Retrieved : " + s);
                 }

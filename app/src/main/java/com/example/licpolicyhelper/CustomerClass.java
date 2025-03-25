@@ -1,5 +1,8 @@
 package com.example.licpolicyhelper;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -116,6 +119,24 @@ public class CustomerClass {
             e.printStackTrace();
             return -1L; // Return -1 if parsing fails
         }
+    }
+
+
+    public CustomerClass encryptCustomerClass(String password){
+        this.name = SecurityClass.encryptDecrypt(this.name, password, true);
+        this.premium = SecurityClass.encryptDecrypt(this.premium, password, true);
+        this.planTerm = SecurityClass.encryptDecrypt(this.planTerm, password, true);
+        this.modeOfPayment = SecurityClass.encryptDecrypt(this.modeOfPayment, password, true);
+        return this;
+    }
+
+    public CustomerClass decryptCustomerClass(String password){
+        this.name = SecurityClass.encryptDecrypt(this.name, password, false);
+        Log.d("QWER", "NameDecrypted - " + this.name);
+        this.premium = SecurityClass.encryptDecrypt(this.premium, password, false);
+        this.planTerm = SecurityClass.encryptDecrypt(this.planTerm, password, false);
+        this.modeOfPayment = SecurityClass.encryptDecrypt(this.modeOfPayment, password, false);
+        return this;
     }
 
 

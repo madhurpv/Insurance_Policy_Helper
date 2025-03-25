@@ -8,10 +8,10 @@ import java.util.TimeZone;
 
 public class BirthdayDetailsClass {
 
-    private String name;
-    private String phoneNo;
-    private String birthDate;
-    private Long birthDateLong;
+    private String name = "";
+    private String phoneNo = "";
+    private String birthDate = "";
+    private Long birthDateLong = -1L;
 
     public BirthdayDetailsClass() {
     }
@@ -64,5 +64,19 @@ public class BirthdayDetailsClass {
             e.printStackTrace();
             return -1L; // Return -1 if parsing fails
         }
+    }
+
+    public BirthdayDetailsClass encryptBirthdayClass(String password){
+        this.name = SecurityClass.encryptDecrypt(this.name, password, true);
+        this.phoneNo = SecurityClass.encryptDecrypt(this.phoneNo, password, true);
+        this.birthDate = SecurityClass.encryptDecrypt(this.birthDate, password, true);
+        return this;
+    }
+
+    public BirthdayDetailsClass decryptBirthdayClass(String password){
+        this.name = SecurityClass.encryptDecrypt(this.name, password, false);
+        this.phoneNo = SecurityClass.encryptDecrypt(this.phoneNo, password, false);
+        this.birthDate = SecurityClass.encryptDecrypt(this.birthDate, password, false);
+        return this;
     }
 }
