@@ -246,6 +246,8 @@ public class BirthdayListActivity extends AppCompatActivity {
                 BirthdayDetailsClass birthdayDetailsClass = new BirthdayDetailsClass(nameEditText.getText().toString(), phoneNoEditText.getText().toString(), birthDateEditText.getText().toString());
                 birthdayDetailsClass.encryptBirthdayClass(password);
 
+                Toast.makeText(BirthdayListActivity.this, "birthdayDetailsClass.getName() : " + birthdayDetailsClass.getName(), Toast.LENGTH_SHORT).show();
+
                 DatabaseReference databaseReference;
                 databaseReference = firebaseDatabase.getReference("users").child(username);
                 databaseReference.child("birthdays").child(birthdayDetailsClass.getName()).setValue(birthdayDetailsClass)
@@ -467,6 +469,10 @@ public class BirthdayListActivity extends AppCompatActivity {
                 //Delete here
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                 String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+                String password = sharedPreferences.getString("password", "ERRORRR!!!!");
+
+                deleteBirthdayDetailsClass.encryptBirthdayClass(password);
+                //Toast.makeText(BirthdayListActivity.this, "Deleting : " + deleteBirthdayDetailsClass.getName(), Toast.LENGTH_SHORT).show();
 
                 DatabaseReference databaseReference;
                 databaseReference = firebaseDatabase.getReference("users").child(username);

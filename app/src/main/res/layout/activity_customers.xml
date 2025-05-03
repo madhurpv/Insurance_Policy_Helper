@@ -139,7 +139,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:backgroundTint="#FF8D02"
-        android:contentDescription="Add New Customer Button"
+        android:contentDescription="Download Excel Sheet"
         app:layout_constraintBottom_toTopOf="@+id/addNewCustomerFloatingActionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="34dp"

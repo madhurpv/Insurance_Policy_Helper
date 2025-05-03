@@ -287,6 +287,7 @@ public class CustomersActivity extends AppCompatActivity {
         Button closeButton = customerInfoDialog.findViewById(R.id.closeButton);
 
 
+        title.setText("Details of " + customersList.get(position).getName());
         nameTextView.setText(customersList.get(position).getName());
         policyNoTextView.setText(String.valueOf(customersList.get(position).getPolicyNo()));
         dateOfCommencementTextView.setText(customersList.get(position).getDateOfCommencement());
@@ -709,7 +710,8 @@ public class CustomersActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(CustomersActivity.this, "Birthday Added Successfully!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CustomersActivity.this, "New Customer Added Successfully!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CustomersActivity.this, "New Customer Added Successfully!", Toast.LENGTH_SHORT).show();
                                 progressBarNewPopup.setVisibility(View.GONE);
                                 disabledPopupView.setVisibility(View.GONE);
                                 newCustomerDetailsDialog.dismiss();

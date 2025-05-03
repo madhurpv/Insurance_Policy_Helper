@@ -94,6 +94,7 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "ERRORRR!!!!");
+        String password = sharedPreferences.getString("password", "ERRORRR!!!!");
 
         List<BirthdayDetailsClass> allList = new ArrayList<>();
 
@@ -104,11 +105,12 @@ public class BirthdayTodayListActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     String s = dataSnapshot.getKey();
-                    allList.add(dataSnapshot.getValue(BirthdayDetailsClass.class));
+                    allList.add(dataSnapshot.getValue(BirthdayDetailsClass.class).decryptBirthdayClass(password));
                     //Toast.makeText(BirthdayListActivity.this, "Retrieved : " + s, Toast.LENGTH_SHORT).show();
                     Log.d("QWER", "Retrieved : " + s);
                 }
                 todaysBirthdayList.clear();
+
                 for(int i=0; i<allList.size(); i++){
                     if(isSameDayAsToday(allList.get(i).getBirthDate())){
                         todaysBirthdayList.add(allList.get(i));
