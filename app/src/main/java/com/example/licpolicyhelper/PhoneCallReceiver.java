@@ -1,5 +1,8 @@
 package com.example.licpolicyhelper;
 
+import static android.telephony.TelephonyManager.CALL_STATE_OFFHOOK;
+
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,6 +34,9 @@ public class PhoneCallReceiver extends Service {
     }
 
     private final BroadcastReceiver callReceiver = new BroadcastReceiver() {
+
+        String previousState;
+
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals("android.intent.action.PHONE_STATE")) {
@@ -38,14 +44,16 @@ public class PhoneCallReceiver extends Service {
                 String state = intent.getStringExtra("state");
                 String phoneNumber = intent.getStringExtra("incoming_number");
                 phoneNumber = getRecentCallNumber(getApplicationContext());
+                Log.d("QWER", "previousState -> " + previousState);
 
-                if (state != null && state.equals("IDLE")) {
+                if (state != null && state.equals("IDLE") && previousState.equals("OFFHOOK")) {
                     SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                     String phoneSMS = sharedPreferences.getString("phoneSMS", "ERRORRR!!!!");
                     //Toast.makeText(getApplicationContext(), "Hello " + (phoneNumber != null ? phoneNumber : "Unknown"), Toast.LENGTH_SHORT).show();
                     sendSMS(phoneNumber, phoneSMS);
                 }
             }
+            previousState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
         }
     };
 
@@ -108,7 +116,9 @@ public class PhoneCallReceiver extends Service {
     public void sendSMS(String phoneNo, String msg) {
         try {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            String SENT = "SMS_SENT";
+            PendingIntent pi = PendingIntent.getBroadcast(this, 0,new Intent(SENT), PendingIntent.FLAG_IMMUTABLE);
+            smsManager.sendTextMessage(phoneNo, null, msg, pi, null);
             Toast.makeText(getApplicationContext(), "Message Sent", Toast.LENGTH_LONG).show();
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(),ex.getMessage().toString(), Toast.LENGTH_LONG).show();
